@@ -140,7 +140,9 @@ def main() -> int:
     builtins = _backend_builtins()
     names = {s["name"] for s in user_skins}
     all_skins = user_skins + [b for b in builtins if b["name"] not in names]
-    data = json.dumps(all_skins, ensure_ascii=False, separators=(",", ":"))
+    # sort_keys=True keeps output byte-stable across runs (matches the shipped
+    # plugin.js), so a rebuild with unchanged skins produces an identical file.
+    data = json.dumps(all_skins, ensure_ascii=False, separators=(",", ":"), sort_keys=True)
 
     # Template lives in the project's plugin/ dir (repo layout) or next to the
     # plugin folder root (in-place layout: ../plugin.template.js).
