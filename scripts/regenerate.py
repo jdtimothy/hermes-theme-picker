@@ -19,7 +19,9 @@ and run "Reload desktop plugins" from the Command Palette (Ctrl+K).
 
 from __future__ import annotations
 
+from collections.abc import Mapping
 import json
+import os
 import re
 import sys
 from pathlib import Path
@@ -47,6 +49,23 @@ KEEP_KEYS = {
 }
 
 HEX_RE = re.compile(r"^#(?:[0-9a-fA-F]{6}|[0-9a-fA-F]{3})$")
+
+
+def resolve_hermes_home(
+    environ: Mapping[str, str] | None = None,
+    home: Path | None = None,
+    platform_name: str | None = None,
+) -> Path:
+    """Return Hermes home using the desktop app's Windows location when needed."""
+    env = os.environ if environ is None else environ
+    configured = env.get("HERMES_HOME")
+    if configured:
+        return Path(configured)
+
+    if (platform_name or sys.platform).startswith("win") and (local_app_data := env.get("LOCALAPPDATA")):
+        return Path(local_app_data) / "hermes"
+
+    return (home or Path.home()) / ".hermes"
 
 
 def _luminance(hex_color: str) -> float | None:
@@ -123,7 +142,11 @@ def _backend_builtins() -> list[dict]:
 
 
 def main() -> int:
-    home = Path(__import__("os").environ.get("HERMES_HOME") or Path.home() / ".hermes")
+    home = resolve_hermes_home()
+
+    if yaml is None:
+        print('ERROR: PyYAML is required to read skin files; refusing to replace plugin.js.', file=sys.stderr)
+        return 1
 
     # Default skins dir: the repo's own skins/ folder when running from a
     # checkout (self-contained), else the Hermes home's skins folder.
@@ -147,6 +170,9 @@ def main() -> int:
     builtins = _backend_builtins()
     names = {s["name"] for s in user_skins}
     all_skins = user_skins + [b for b in builtins if b["name"] not in names]
+    if not all_skins:
+        print(f"ERROR: no skins found in {skins_dir}; refusing to replace {out_path}.", file=sys.stderr)
+        return 1
     # sort_keys=True keeps output byte-stable across runs (matches the shipped
     # plugin.js), so a rebuild with unchanged skins produces an identical file.
     data = json.dumps(all_skins, ensure_ascii=False, separators=(",", ":"), sort_keys=True)

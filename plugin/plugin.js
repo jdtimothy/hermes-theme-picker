@@ -41,6 +41,9 @@ import { useEffect, useMemo, useState } from 'react'
 
 const ID = 'theme-picker'
 const PAGE_PATH = '/theme-picker'
+// Desktop reads this cache before plugins register, so a selected contributed
+// theme remains resolvable during the next app startup.
+const USER_THEMES_KEY = 'hermes-desktop-user-themes-v1'
 
 // ---------------------------------------------------------------------------
 // Embedded skin catalog — generated from ~/.hermes/skins/*.yaml + backend
@@ -173,6 +176,27 @@ function skinToDesktopTheme(skin) {
     description: skin.description || 'Hermes skin',
     colors: palette,
     darkColors: palette
+  }
+}
+
+function persistThemesForBoot(themes) {
+  try {
+    const raw = window.localStorage.getItem(USER_THEMES_KEY)
+    const stored = raw ? JSON.parse(raw) : {}
+    if (!stored || typeof stored !== 'object' || Array.isArray(stored)) return
+
+    let changed = false
+    for (const theme of themes) {
+      // Native imports take precedence over a plugin contribution with the same
+      // name, matching the desktop's user-theme resolution order.
+      if (!stored[theme.name]) {
+        stored[theme.name] = theme
+        changed = true
+      }
+    }
+    if (changed) window.localStorage.setItem(USER_THEMES_KEY, JSON.stringify(stored))
+  } catch {
+    // Storage is best-effort; the current session can still use contributed themes.
   }
 }
 
@@ -443,16 +467,17 @@ export default {
     // Register every USER skin as a desktop theme so it shows up in Settings →
     // Appearance and can be applied there (offline-safe). Built-ins are skipped:
     // the desktop already ships its own presets for those names.
-    for (const skin of SKINS) {
-      if (skin.source === 'builtin') continue
-      const theme = skinToDesktopTheme(skin)
-      if (theme) {
-        ctx.register({
-          id: `theme:${skin.name}`,
-          area: THEMES_AREA,
-          data: theme
-        })
-      }
+    const userThemes = SKINS
+      .filter(skin => skin.source !== 'builtin')
+      .map(skinToDesktopTheme)
+      .filter(Boolean)
+    persistThemesForBoot(userThemes)
+    for (const theme of userThemes) {
+      ctx.register({
+        id: `theme:${theme.name}`,
+        area: THEMES_AREA,
+        data: theme
+      })
     }
 
     // A full page — reachable from the statusbar chip, sidebar nav, and palette.
