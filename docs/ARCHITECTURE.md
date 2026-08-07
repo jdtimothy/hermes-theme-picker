@@ -61,9 +61,22 @@ color keys the desktop converter uses. `plugin/plugin.template.js` is the same
 file with `__SKINS_DATA__` as a placeholder; `scripts/regenerate.py` fills it.
 
 `scripts/regenerate.py`:
-- parses every `skins/*.yaml` on the gateway (`HERMES_HOME` or `~/.hermes`),
+- parses every `skins/*.yaml` (the repo's bundled `skins/` by default when
+  running from a checkout, else `$HERMES_HOME/skins`),
 - pulls backend built-ins via `hermes_cli.skin_engine.list_skins()`,
-- writes `plugin/plugin.js` (or a target path).
+- writes `plugin/plugin.js` (repo layout) or back to the desktop-plugins
+  folder (in-place layout).
+
+## Bundled skins
+
+`skins/` in this repo contains 74 skins: 50 from
+[BChop's Hermes Skins Pack](https://github.com/bchop-studio/hermes-skins-pack)
+and 24 from
+[CliffWade's Hermes Desktop Theme Pack](https://github.com/CliffWade/hermes-desktop-theme-pack),
+both MIT-licensed (see `THIRD_PARTY_NOTICES.md`). They are vendored so a fresh
+clone is self-contained: `python3 scripts/regenerate.py` works immediately.
+They are byte-identical to upstream; `regenerate.py` only reads their
+`colors`/`description` and never modifies them.
 
 ## Registration rules
 
@@ -85,5 +98,8 @@ desktop, so a full page is the reliable way to "open the picker" from the chip.
 |---|---|
 | `plugin/plugin.js` | Generated deliverable — copy into the desktop app |
 | `plugin/plugin.template.js` | Source of truth for the UI code |
+| `skins/` | 74 bundled skins (MIT, from the two packs) |
 | `scripts/regenerate.py` | Rebuild plugin.js from skins + template |
 | `install/install-windows.ps1` | Windows installer (detects Desktop home) |
+| `LICENSE` | MIT license for this project |
+| `THIRD_PARTY_NOTICES.md` | MIT notices for the bundled skins |

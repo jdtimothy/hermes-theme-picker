@@ -124,12 +124,19 @@ def _backend_builtins() -> list[dict]:
 
 def main() -> int:
     home = Path(__import__("os").environ.get("HERMES_HOME") or Path.home() / ".hermes")
-    skins_dir = Path(sys.argv[1]) if len(sys.argv) > 1 else home / "skins"
-    out_path = (
-        Path(sys.argv[2])
-        if len(sys.argv) > 2
-        else home / "desktop-plugins" / "theme-picker" / "plugin.js"
-    )
+
+    # Default skins dir: the repo's own skins/ folder when running from a
+    # checkout (self-contained), else the Hermes home's skins folder.
+    script_dir = Path(__file__).resolve().parent
+    repo_skins = script_dir.parent / "skins"
+    default_skins = repo_skins if repo_skins.is_dir() else home / "skins"
+    skins_dir = Path(sys.argv[1]) if len(sys.argv) > 1 else default_skins
+
+    # Default output: the repo's plugin/plugin.js when running from a checkout,
+    # else the in-place desktop-plugins location.
+    repo_out = script_dir.parent / "plugin" / "plugin.js"
+    default_out = repo_out if (script_dir.parent / "plugin").is_dir() else home / "desktop-plugins" / "theme-picker" / "plugin.js"
+    out_path = Path(sys.argv[2]) if len(sys.argv) > 2 else default_out
 
     user_skins = []
     for p in sorted(skins_dir.glob("*.yaml")):
