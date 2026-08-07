@@ -100,6 +100,7 @@ desktop, so a full page is the reliable way to "open the picker" from the chip.
 | `plugin/plugin.template.js` | Source of truth for the UI code |
 | `skins/` | 74 bundled skins (MIT, from the two packs) |
 | `scripts/regenerate.py` | Rebuild plugin.js from skins + template |
+| `install/install-macos.command` | macOS installer (honors `HERMES_HOME`) |
 | `install/install-windows.ps1` | Windows installer (detects Desktop home) |
 | `LICENSE` | MIT license for this project |
 | `THIRD_PARTY_NOTICES.md` | MIT notices for the bundled skins |
