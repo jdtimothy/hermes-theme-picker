@@ -79,39 +79,87 @@ a restart.
   the gateway is unreachable, skins can still be switched from Settings →
   Appearance.
 
-## Quick start
+## Installation
 
-1. **Copy the plugin into Hermes Desktop:**
+Clone or download this repository, then choose either the automatic installer
+or the manual copy instructions below. Both methods install the same single
+file, `plugin/plugin.js`; Python and the files in `skins/` are not needed just
+to use the picker.
 
-   The desktop app loads plugins from a `desktop-plugins` folder inside its
-   Hermes home. Find your Hermes home (run `hermes doctor` if unsure):
+### Automatic installers
 
-   | Platform | Typical Hermes home |
-   |---|---|
-   | Windows (Desktop install) | `%LOCALAPPDATA%\hermes` |
-   | macOS / Linux (CLI default) | `~/.hermes` |
+#### Windows
 
-   ```bash
-   # macOS / Linux
-   mkdir -p ~/.hermes/desktop-plugins/theme-picker
-   cp plugin/plugin.js ~/.hermes/desktop-plugins/theme-picker/plugin.js
-   ```
+Double-click `install\install-windows.cmd` in File Explorer, or run it from
+PowerShell:
 
-   ```powershell
-   # Windows — double-click install\install-windows.cmd in Explorer,
-   # or run it from a PowerShell prompt:
-   .\install\install-windows.cmd
-   ```
+```powershell
+.\install\install-windows.cmd
+```
 
-   The launcher starts PowerShell for this install only. If you prefer the
-   script itself, right-click `install-windows.ps1` and choose **Run with
-   PowerShell**; double-clicking a `.ps1` can open it in a text editor instead.
+The launcher runs the PowerShell installer with an execution-policy bypass for
+that process only. You can alternatively right-click `install-windows.ps1` and
+choose **Run with PowerShell**; double-clicking a `.ps1` may open it in an
+editor instead of running it.
 
-2. **Reload plugins:** in Hermes Desktop, press `Ctrl+K` and run
-   **Reload desktop plugins** (or restart the app).
+The Windows installer uses `%HERMES_HOME%` when it is set. Otherwise it installs
+to `%LOCALAPPDATA%\hermes` when that Desktop home already exists, falling back
+to `%USERPROFILE%\.hermes` for a CLI-style installation. It prints the exact
+destination when it finishes.
 
-3. **Open the picker:** click the theme name in the bottom statusbar, or press
-   `Ctrl+K` → **Open Theme Picker**.
+#### macOS
+
+Double-click `install/install-macos.command` in Finder, or run it from Terminal:
+
+```bash
+./install/install-macos.command
+```
+
+The installer uses `$HERMES_HOME` when it is set; otherwise it installs under
+`~/.hermes`. If macOS blocks a downloaded script, right-click the file, choose
+**Open**, and confirm once, or run it from Terminal with:
+
+```bash
+sh install/install-macos.command
+```
+
+### Manual installation
+
+Hermes Desktop loads this plugin from a folder named `theme-picker` inside its
+local `desktop-plugins` directory. Copy **`plugin/plugin.js` from this repo** to
+the exact destination below (create the missing folders first):
+
+| Platform | Plugin destination |
+|---|---|
+| Windows | `%LOCALAPPDATA%\hermes\desktop-plugins\theme-picker\plugin.js` |
+| macOS | `~/.hermes/desktop-plugins/theme-picker/plugin.js` |
+| Linux | `~/.hermes/desktop-plugins/theme-picker/plugin.js` |
+
+If you have set `HERMES_HOME`, replace `%LOCALAPPDATA%\hermes` or `~/.hermes`
+with that directory.
+
+**Windows (PowerShell):**
+
+```powershell
+$dest = if ($env:HERMES_HOME) { $env:HERMES_HOME } else { "$env:LOCALAPPDATA\hermes" }
+New-Item -ItemType Directory -Force "$dest\desktop-plugins\theme-picker" | Out-Null
+Copy-Item .\plugin\plugin.js "$dest\desktop-plugins\theme-picker\plugin.js" -Force
+```
+
+**macOS or Linux:**
+
+```bash
+hermes_home="${HERMES_HOME:-$HOME/.hermes}"
+mkdir -p "$hermes_home/desktop-plugins/theme-picker"
+cp plugin/plugin.js "$hermes_home/desktop-plugins/theme-picker/plugin.js"
+```
+
+### Finish setup
+
+1. In Hermes Desktop, open the Command Palette and run **Reload desktop
+   plugins**. Restarting the app also works.
+2. Click the theme name in the bottom statusbar, or open the Command Palette
+   and run **Open Theme Picker**.
 
 That's it. Click any card to switch themes instantly.
 
@@ -210,6 +258,7 @@ directory, then reload plugins or restart the app. Your skins are untouched.
 ├── scripts/
 │   └── regenerate.py        ← rebuild plugin.js from skins + template
 ├── install/
+│   ├── install-macos.command     ← double-clickable macOS installer
 │   ├── install-windows.cmd       ← double-clickable Windows launcher
 │   ├── install-windows.ps1       ← installer logic
 │   └── regenerate-windows.ps1    ← rebuilds Windows catalog with local skins

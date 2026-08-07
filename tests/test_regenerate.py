@@ -1,5 +1,6 @@
 import importlib.util
 import os
+import subprocess
 import sys
 import tempfile
 import unittest
@@ -53,6 +54,50 @@ class WindowsRunnerTests(unittest.TestCase):
         self.assertIn("Join-Path $bundle '..\\skins'", source)
         self.assertIn("Join-Path $hermesHome 'skins'", source)
         self.assertIn("scripts\\regenerate.py", source)
+
+
+class MacInstallerTests(unittest.TestCase):
+    def test_installs_plugin_into_explicit_hermes_home(self):
+        installer = SCRIPT.parents[1] / 'install' / 'install-macos.command'
+        expected_plugin = SCRIPT.parents[1] / 'plugin' / 'plugin.js'
+
+        with tempfile.TemporaryDirectory() as temp_dir:
+            hermes_home = Path(temp_dir) / 'custom-hermes-home'
+            env = os.environ.copy()
+            env['HERMES_HOME'] = str(hermes_home)
+
+            result = subprocess.run(
+                [str(installer)],
+                check=True,
+                capture_output=True,
+                env=env,
+                text=True,
+            )
+
+            installed_plugin = hermes_home / 'desktop-plugins' / 'theme-picker' / 'plugin.js'
+            self.assertEqual(installed_plugin.read_bytes(), expected_plugin.read_bytes())
+            self.assertIn(f'Installed Theme Picker into: {installed_plugin.parent}', result.stdout)
+
+    def test_installs_plugin_into_default_home_when_hermes_home_is_unset(self):
+        installer = SCRIPT.parents[1] / 'install' / 'install-macos.command'
+        expected_plugin = SCRIPT.parents[1] / 'plugin' / 'plugin.js'
+
+        with tempfile.TemporaryDirectory() as temp_dir:
+            home = Path(temp_dir) / 'home with spaces'
+            env = os.environ.copy()
+            env.pop('HERMES_HOME', None)
+            env['HOME'] = str(home)
+
+            subprocess.run(
+                [str(installer)],
+                check=True,
+                capture_output=True,
+                env=env,
+                text=True,
+            )
+
+            installed_plugin = home / '.hermes' / 'desktop-plugins' / 'theme-picker' / 'plugin.js'
+            self.assertEqual(installed_plugin.read_bytes(), expected_plugin.read_bytes())
 
 
 if __name__ == '__main__':
