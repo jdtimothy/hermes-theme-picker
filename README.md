@@ -49,10 +49,14 @@ needed to switch themes.
    ```
 
    ```powershell
-   # Windows — or just run install\install-windows.ps1
-   New-Item -ItemType Directory -Force "$env:LOCALAPPDATA\hermes\desktop-plugins\theme-picker"
-   Copy-Item plugin\plugin.js "$env:LOCALAPPDATA\hermes\desktop-plugins\theme-picker\plugin.js"
+   # Windows — double-click install\install-windows.cmd in Explorer,
+   # or run it from a PowerShell prompt:
+   .\install\install-windows.cmd
    ```
+
+   The launcher starts PowerShell for this install only. If you prefer the
+   script itself, right-click `install-windows.ps1` and choose **Run with
+   PowerShell**; double-clicking a `.ps1` can open it in a text editor instead.
 
 2. **Reload plugins:** in Hermes Desktop, press `Ctrl+K` and run
    **Reload desktop plugins** (or restart the app).
@@ -134,7 +138,8 @@ directory, then reload plugins or restart the app. Your skins are untouched.
 ├── scripts/
 │   └── regenerate.py        ← rebuild plugin.js from skins + template
 ├── install/
-│   └── install-windows.ps1  ← one-shot Windows installer
+│   ├── install-windows.cmd  ← double-clickable Windows launcher
+│   └── install-windows.ps1  ← installer logic
 ├── docs/ARCHITECTURE.md     ← how the picker works internally
 ├── LICENSE                  ← MIT (this project)
 └── THIRD_PARTY_NOTICES.md   ← MIT notices for the bundled skins
