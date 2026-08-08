@@ -1,0 +1,21 @@
+name: theme-picker-dark-nord-dark
+description: Theme Picker transport for Nord (dark)
+colors:
+  background: '#2e3440'
+  ui_accent: '#88c0d0'
+  banner_accent: '#88c0d0'
+  banner_title: '#e5e9f0'
+  banner_text: '#e5e9f0'
+  ui_text: '#e5e9f0'
+  banner_dim: '#81a1c1'
+  banner_border: '#4c566a'
+  ui_border: '#4c566a'
+  ui_ok: '#a3be8c'
+  ui_warn: '#ebcb8b'
+  ui_error: '#bf616a'
+  prompt: '#e5e9f0'
+  status_bar_bg: '#2a303b'
+  status_bar_text: '#e5e9f0'
+  session_border: '#4c566a'
+  ui_tool: '#a6d4e0'
+  completion_menu_bg: '#2a303b'

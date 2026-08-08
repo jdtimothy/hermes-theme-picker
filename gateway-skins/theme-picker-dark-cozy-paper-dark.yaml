@@ -1,0 +1,21 @@
+name: theme-picker-dark-cozy-paper-dark
+description: Theme Picker transport for Cozy Paper (dark)
+colors:
+  background: '#232323'
+  ui_accent: '#c9a87c'
+  banner_accent: '#c9a87c'
+  banner_title: '#ddd7c9'
+  banner_text: '#ddd7c9'
+  ui_text: '#ddd7c9'
+  banner_dim: '#9a948a'
+  banner_border: '#3a3a3a'
+  ui_border: '#3a3a3a'
+  ui_ok: '#a8b57a'
+  ui_warn: '#d8b26a'
+  ui_error: '#c97b7b'
+  prompt: '#ddd7c9'
+  status_bar_bg: '#202020'
+  status_bar_text: '#ddd7c9'
+  session_border: '#3a3a3a'
+  ui_tool: '#dcbc92'
+  completion_menu_bg: '#202020'

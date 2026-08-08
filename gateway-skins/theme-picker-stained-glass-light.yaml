@@ -1,0 +1,21 @@
+name: theme-picker-stained-glass-light
+description: Theme Picker transport for Stained Glass (light)
+colors:
+  background: '#f7f3ee'
+  ui_accent: '#2a5da8'
+  banner_accent: '#2a5da8'
+  banner_title: '#141414'
+  banner_text: '#141414'
+  ui_text: '#141414'
+  banner_dim: '#6b6b78'
+  banner_border: '#d8d0c4'
+  ui_border: '#d8d0c4'
+  ui_ok: '#3fbd6d'
+  ui_warn: '#bc8f1b'
+  ui_error: '#d36060'
+  prompt: '#141414'
+  status_bar_bg: '#ede9e4'
+  status_bar_text: '#141414'
+  session_border: '#d8d0c4'
+  ui_tool: '#1f4a86'
+  completion_menu_bg: '#ede9e4'

@@ -1,0 +1,21 @@
+name: theme-picker-vibrant-neon-dark
+description: Theme Picker transport for Vibrant Neon (dark)
+colors:
+  background: '#081420'
+  ui_accent: '#6dffce'
+  banner_accent: '#6dffce'
+  banner_title: '#e0f7ef'
+  banner_text: '#e0f7ef'
+  ui_text: '#e0f7ef'
+  banner_dim: '#7fa3c9'
+  banner_border: '#123044'
+  ui_border: '#123044'
+  ui_ok: '#4ade80'
+  ui_warn: '#fbbf24'
+  ui_error: '#f87171'
+  prompt: '#e0f7ef'
+  status_bar_bg: '#07121d'
+  status_bar_text: '#e0f7ef'
+  session_border: '#123044'
+  ui_tool: '#00e5a0'
+  completion_menu_bg: '#15222c'

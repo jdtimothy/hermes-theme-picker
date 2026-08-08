@@ -1,0 +1,21 @@
+name: theme-picker-dark-rosepine-dark
+description: Theme Picker transport for Rosepine (dark)
+colors:
+  background: '#191724'
+  ui_accent: '#ebbcba'
+  banner_accent: '#ebbcba'
+  banner_title: '#e0def4'
+  banner_text: '#e0def4'
+  ui_text: '#e0def4'
+  banner_dim: '#908caa'
+  banner_border: '#26233a'
+  ui_border: '#26233a'
+  ui_ok: '#9ccfd8'
+  ui_warn: '#f6c177'
+  ui_error: '#eb6f92'
+  prompt: '#e0def4'
+  status_bar_bg: '#171521'
+  status_bar_text: '#e0def4'
+  session_border: '#26233a'
+  ui_tool: '#f2cfcd'
+  completion_menu_bg: '#171521'

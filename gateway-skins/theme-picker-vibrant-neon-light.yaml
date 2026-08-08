@@ -1,0 +1,21 @@
+name: theme-picker-vibrant-neon-light
+description: Theme Picker transport for Vibrant Neon (light)
+colors:
+  background: '#f0faf6'
+  ui_accent: '#0d7a4e'
+  banner_accent: '#0d7a4e'
+  banner_title: '#141414'
+  banner_text: '#141414'
+  ui_text: '#141414'
+  banner_dim: '#3f6b5c'
+  banner_border: '#cfe8dd'
+  ui_border: '#cfe8dd'
+  ui_ok: '#3fbd6d'
+  ui_warn: '#bc8f1b'
+  ui_error: '#d36060'
+  prompt: '#141414'
+  status_bar_bg: '#e6f0ec'
+  status_bar_text: '#141414'
+  session_border: '#cfe8dd'
+  ui_tool: '#0a5c3c'
+  completion_menu_bg: '#e6f0ec'

@@ -1,0 +1,11 @@
+name: theme-picker-rose-dark
+description: Theme Picker transport for Rose (dark)
+colors:
+  background: '#1A0F15'
+  ui_text: '#FFD4E1'
+  banner_text: '#FFD4E1'
+  ui_accent: '#F9A8D4'
+  banner_accent: '#F9A8D4'
+  ui_tool: '#F9A8D4'
+  ui_border: '#54283B'
+  banner_border: '#54283B'

@@ -1,0 +1,21 @@
+name: theme-picker-steel-thread-dark
+description: Theme Picker transport for Steel Thread (dark)
+colors:
+  background: '#18181a'
+  ui_accent: '#888890'
+  banner_accent: '#707078'
+  banner_title: '#a0a0a8'
+  banner_text: '#c0c0c8'
+  ui_text: '#c0c0c8'
+  banner_dim: '#88888c'
+  banner_border: '#4a4a50'
+  ui_border: '#4a4a50'
+  ui_ok: '#78a078'
+  ui_warn: '#a09860'
+  ui_error: '#a07070'
+  prompt: '#c0c0c8'
+  status_bar_bg: '#0e0e10'
+  status_bar_text: '#808088'
+  session_border: '#343438'
+  ui_tool: '#7088a0'
+  completion_menu_bg: '#18181a'

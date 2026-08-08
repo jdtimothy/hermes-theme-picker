@@ -1,0 +1,11 @@
+name: theme-picker-cyberpunk-light
+description: Theme Picker transport for Cyberpunk (light)
+colors:
+  background: '#FFFFFF'
+  ui_text: '#161616'
+  banner_text: '#161616'
+  ui_accent: '#008F28'
+  banner_accent: '#008F28'
+  ui_tool: '#008F28'
+  ui_border: '#C9E8D2'
+  banner_border: '#C9E8D2'

@@ -1,0 +1,21 @@
+name: theme-picker-shadow-thief-dark
+description: Theme Picker transport for Shadow Thief (dark)
+colors:
+  background: '#101014'
+  ui_accent: '#50a8a8'
+  banner_accent: '#50a8a8'
+  banner_title: '#8898b0'
+  banner_text: '#b0b0c0'
+  ui_text: '#b0b0c0'
+  banner_dim: '#7e7c8c'
+  banner_border: '#4a4060'
+  ui_border: '#4a4060'
+  ui_ok: '#50a070'
+  ui_warn: '#a09050'
+  ui_error: '#a05060'
+  prompt: '#b0b0c0'
+  status_bar_bg: '#08080c'
+  status_bar_text: '#787888'
+  session_border: '#2a2838'
+  ui_tool: '#50a8a8'
+  completion_menu_bg: '#101014'

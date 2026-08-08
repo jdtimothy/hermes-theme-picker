@@ -1,0 +1,21 @@
+name: theme-picker-dark-sage-dark
+description: Theme Picker transport for Sage (dark)
+colors:
+  background: '#141812'
+  ui_accent: '#8fae6a'
+  banner_accent: '#8fae6a'
+  banner_title: '#f5f2ec'
+  banner_text: '#f5f2ec'
+  ui_text: '#f5f2ec'
+  banner_dim: '#7d8a70'
+  banner_border: '#2a3223'
+  ui_border: '#2a3223'
+  ui_ok: '#4ade80'
+  ui_warn: '#fbbf24'
+  ui_error: '#f87171'
+  prompt: '#f5f2ec'
+  status_bar_bg: '#121611'
+  status_bar_text: '#f5f2ec'
+  session_border: '#2a3223'
+  ui_tool: '#b3cc8f'
+  completion_menu_bg: '#121611'

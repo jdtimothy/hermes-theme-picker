@@ -1,0 +1,21 @@
+name: theme-picker-shadow-thief-light
+description: Theme Picker transport for Shadow Thief (light)
+colors:
+  background: '#f7f1fa'
+  ui_accent: '#8b5ca8'
+  banner_accent: '#8b5ca8'
+  banner_title: '#3a2645'
+  banner_text: '#3a2645'
+  ui_text: '#3a2645'
+  banner_dim: '#6d5a80'
+  banner_border: '#d8c8e0'
+  ui_border: '#d8c8e0'
+  ui_ok: '#3f7d4e'
+  ui_warn: '#a87a1f'
+  ui_error: '#b23a3a'
+  prompt: '#3a2645'
+  status_bar_bg: '#ede3f2'
+  status_bar_text: '#3a2645'
+  session_border: '#d8c8e0'
+  ui_tool: '#7a4f94'
+  completion_menu_bg: '#ffffff'

@@ -1,0 +1,21 @@
+name: theme-picker-dark-kanagawa-light
+description: Theme Picker transport for Kanagawa (light)
+colors:
+  background: '#f2ecbc'
+  ui_accent: '#47688f'
+  banner_accent: '#47688f'
+  banner_title: '#545464'
+  banner_text: '#545464'
+  ui_text: '#545464'
+  banner_dim: '#6e6a5e'
+  banner_border: '#d8d0b0'
+  ui_border: '#d8d0b0'
+  ui_ok: '#647b46'
+  ui_warn: '#7d6230'
+  ui_error: '#ad354a'
+  prompt: '#545464'
+  status_bar_bg: '#e8e3b4'
+  status_bar_text: '#545464'
+  session_border: '#d8d0b0'
+  ui_tool: '#3b5878'
+  completion_menu_bg: '#e8e3b4'

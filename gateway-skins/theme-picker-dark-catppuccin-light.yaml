@@ -1,0 +1,21 @@
+name: theme-picker-dark-catppuccin-light
+description: Theme Picker transport for Catppuccin (light)
+colors:
+  background: '#eff1f5'
+  ui_accent: '#1d62eb'
+  banner_accent: '#1d62eb'
+  banner_title: '#4c4f69'
+  banner_text: '#4c4f69'
+  ui_text: '#4c4f69'
+  banner_dim: '#686b7b'
+  banner_border: '#ccd0da'
+  ui_border: '#ccd0da'
+  ui_ok: '#3a9027'
+  ui_warn: '#b27217'
+  ui_error: '#bd0e33'
+  prompt: '#4c4f69'
+  status_bar_bg: '#e5e7eb'
+  status_bar_text: '#4c4f69'
+  session_border: '#ccd0da'
+  ui_tool: '#1751c4'
+  completion_menu_bg: '#e5e7eb'

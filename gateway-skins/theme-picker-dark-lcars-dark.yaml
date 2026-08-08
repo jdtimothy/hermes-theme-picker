@@ -1,0 +1,21 @@
+name: theme-picker-dark-lcars-dark
+description: Theme Picker transport for Lcars (dark)
+colors:
+  background: '#050510'
+  ui_accent: '#FF9C00'
+  banner_accent: '#FF9C00'
+  banner_title: '#FFFFFF'
+  banner_text: '#FFFFFF'
+  ui_text: '#FFFFFF'
+  banner_dim: '#999999'
+  banner_border: '#3366FF'
+  ui_border: '#3366FF'
+  ui_ok: '#66FF99'
+  ui_warn: '#FFCC66'
+  ui_error: '#FF5555'
+  prompt: '#FFFFFF'
+  status_bar_bg: '#0A0A1A'
+  status_bar_text: '#FFFFFF'
+  session_border: '#3366FF'
+  ui_tool: '#66CCFF'
+  completion_menu_bg: '#0A0A1A'

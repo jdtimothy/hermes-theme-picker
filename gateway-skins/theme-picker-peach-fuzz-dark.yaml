@@ -1,0 +1,21 @@
+name: theme-picker-peach-fuzz-dark
+description: Theme Picker transport for Peach Fuzz (dark)
+colors:
+  background: '#201c18'
+  ui_accent: '#e0a080'
+  banner_accent: '#e0a080'
+  banner_title: '#f0c8a8'
+  banner_text: '#e8d8c8'
+  ui_text: '#e8d8c8'
+  banner_dim: '#948474'
+  banner_border: '#d89070'
+  ui_border: '#d89070'
+  ui_ok: '#90c090'
+  ui_warn: '#e0b870'
+  ui_error: '#d07068'
+  prompt: '#e8d8c8'
+  status_bar_bg: '#141210'
+  status_bar_text: '#a89080'
+  session_border: '#584838'
+  ui_tool: '#90b8c0'
+  completion_menu_bg: '#201c18'

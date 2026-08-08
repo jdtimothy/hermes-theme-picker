@@ -1,0 +1,21 @@
+name: theme-picker-retro-terminal-light
+description: Theme Picker transport for Retro Terminal (light)
+colors:
+  background: '#f2faf5'
+  ui_accent: '#267e58'
+  banner_accent: '#267e58'
+  banner_title: '#1e2b25'
+  banner_text: '#1e2b25'
+  ui_text: '#1e2b25'
+  banner_dim: '#5b7569'
+  banner_border: '#d3e8dd'
+  ui_border: '#d3e8dd'
+  ui_ok: '#2f8e52'
+  ui_warn: '#a17a17'
+  ui_error: '#d05f5f'
+  prompt: '#1e2b25'
+  status_bar_bg: '#f3faf6'
+  status_bar_text: '#1e2b25'
+  session_border: '#d3e8dd'
+  ui_tool: '#2f9e6e'
+  completion_menu_bg: '#e5eee9'

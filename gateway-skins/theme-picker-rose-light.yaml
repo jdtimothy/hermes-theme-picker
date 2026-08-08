@@ -1,0 +1,11 @@
+name: theme-picker-rose-light
+description: Theme Picker transport for Rose (light)
+colors:
+  background: '#FFF8FB'
+  ui_text: '#24171D'
+  banner_text: '#24171D'
+  ui_accent: '#B64F78'
+  banner_accent: '#B64F78'
+  ui_tool: '#B64F78'
+  ui_border: '#E8CAD6'
+  banner_border: '#E8CAD6'

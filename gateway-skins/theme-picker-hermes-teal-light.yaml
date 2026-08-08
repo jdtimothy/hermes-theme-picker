@@ -1,0 +1,11 @@
+name: theme-picker-hermes-teal-light
+description: Theme Picker transport for Hermes Teal (light)
+colors:
+  background: '#F4FCFC'
+  ui_text: '#132B2B'
+  banner_text: '#132B2B'
+  ui_accent: '#087F7A'
+  banner_accent: '#087F7A'
+  ui_tool: '#087F7A'
+  ui_border: '#B9DBD8'
+  banner_border: '#B9DBD8'

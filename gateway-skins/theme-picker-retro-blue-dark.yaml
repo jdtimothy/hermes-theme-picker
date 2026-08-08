@@ -1,0 +1,21 @@
+name: theme-picker-retro-blue-dark
+description: Theme Picker transport for Retro Blue (dark)
+colors:
+  background: '#04081a'
+  ui_accent: '#8ccaff'
+  banner_accent: '#8ccaff'
+  banner_title: '#d6e6ff'
+  banner_text: '#d6e6ff'
+  ui_text: '#d6e6ff'
+  banner_dim: '#6a86b0'
+  banner_border: '#122452'
+  ui_border: '#122452'
+  ui_ok: '#4ade80'
+  ui_warn: '#fbbf24'
+  ui_error: '#f87171'
+  prompt: '#d6e6ff'
+  status_bar_bg: '#040717'
+  status_bar_text: '#d6e6ff'
+  session_border: '#122452'
+  ui_tool: '#44aaff'
+  completion_menu_bg: '#111528'

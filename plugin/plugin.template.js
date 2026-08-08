@@ -1,13 +1,14 @@
 /**
  * theme-picker — browse and apply Hermes skins from a full-page picker.
  *
- * Self-contained: all skin color data is embedded (no Python backend, no REST),
- * so it works identically on any machine running the desktop app. Applying uses
- * the gateway RPC `config.set { key: 'skin', value: <name> }`, which writes
- * display.skin and broadcasts `skin.changed` — the desktop then repaints live
- * (verified against tui_gateway/server.py + apps/desktop/src/themes/backend-sync.ts).
+ * Self-contained: all scene color data is embedded (no Python backend, no REST),
+ * so it works identically on any machine running Hermes Desktop. Applying a
+ * scene mirrors Desktop's root-token application path immediately, then saves the
+ * scene and mode for the next boot — no navigation or renderer reload. The
+ * selected concrete light/dark variant is also queued through gateway
+ * `config.set`, which broadcasts it to every connected Desktop and CLI.
  *
- * It also registers every user skin via THEMES_AREA, so the same skins show up
+ * It also registers every scene via THEMES_AREA, so the same scenes show up
  * in Settings → Appearance and can be switched there (works even offline).
  *
  * Live discovery: when a skin is applied from elsewhere (CLI /skin, another
@@ -44,6 +45,26 @@ const PAGE_PATH = '/theme-picker'
 // Desktop reads this cache before plugins register, so a selected contributed
 // theme remains resolvable during the next app startup.
 const USER_THEMES_KEY = 'hermes-desktop-user-themes-v1'
+const SKIN_KEY = 'hermes-desktop-theme-v2'
+const MODE_KEY = 'hermes-desktop-mode-v1'
+const PROFILE_SKINS_KEY = 'hermes-desktop-profile-themes-v1'
+const PROFILE_MODES_KEY = 'hermes-desktop-profile-modes-v1'
+const CORE_DESKTOP_THEMES = new Set(['nous', 'midnight', 'ember', 'mono', 'cyberpunk', 'slate'])
+const EMOJI_FALLBACK = '"Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji", emoji'
+const DEFAULT_FONT_SANS = '"Segoe WPC", "Segoe UI", -apple-system, BlinkMacSystemFont, "SF Pro Text", "SF Pro Display", system-ui, sans-serif, ' + EMOJI_FALLBACK
+const DEFAULT_FONT_MONO = 'Menlo, Monaco, "SF Mono", "Courier Prime", monospace, ' + EMOJI_FALLBACK
+const SCENE_TYPOGRAPHY = {
+  nous: { fontMono: `"Courier Prime", ${DEFAULT_FONT_MONO}` },
+  midnight: { fontMono: `"JetBrains Mono", ${DEFAULT_FONT_MONO}` },
+  ember: { fontMono: `"IBM Plex Mono", ${DEFAULT_FONT_MONO}` },
+  cyberpunk: {
+    fontSans: `"Courier New", Courier, monospace, ${EMOJI_FALLBACK}`,
+    fontMono: `"Courier New", Courier, monospace, ${EMOJI_FALLBACK}`
+  }
+}
+let gatewaySyncQueue = Promise.resolve()
+let applyGeneration = 0
+const latestAppearanceByProfile = new Map()
 
 // ---------------------------------------------------------------------------
 // Embedded skin catalog — generated from ~/.hermes/skins/*.yaml + backend
@@ -179,25 +200,275 @@ function skinToDesktopTheme(skin) {
   }
 }
 
+function sceneToDesktopTheme(scene) {
+  const lightColors = scene.lightColors || scene.darkColors || scene.colors || {}
+  const darkColors = scene.darkColors || scene.lightColors || scene.colors || {}
+  const light = skinToDesktopTheme({ ...scene, colors: lightColors })
+  const dark = skinToDesktopTheme({ ...scene, colors: darkColors })
+  return {
+    ...light,
+    label: scene.label || light.label,
+    description: scene.description || 'Theme Picker scene',
+    colors: light.colors,
+    darkColors: dark.colors,
+    typography: SCENE_TYPOGRAPHY[scene.name],
+    themePickerManaged: true
+  }
+}
+
+function renderedModeFor(colors, mode) {
+  return luminance(colors.background) > 0.5 ? 'light' : hexToRgb(colors.background) ? 'dark' : mode
+}
+
+const NEUTRAL_CHROME = { light: '#f3f3f3', dark: '#0d0d0e' }
+
+function mixesFor(isDark) {
+  return {
+    '--theme-mix-chrome': isDark ? '74%' : '92%',
+    '--theme-mix-sidebar': '100%',
+    '--theme-mix-card': isDark ? '38%' : '22%',
+    '--theme-mix-elevated': isDark ? '46%' : '28%',
+    '--theme-mix-bubble': isDark ? '46%' : '0%'
+  }
+}
+
+/**
+ * Immediate local repaint — a source-faithful port of Desktop's applyTheme().
+ * The public plugin SDK does not expose ThemeContext.setTheme/setMode, so this
+ * updates the same root tokens and native window hooks without navigating or
+ * remounting the React app. Persistence is handled separately for next boot.
+ */
+function applyDesktopTheme(theme, mode) {
+  const root = document.documentElement
+  const c = mode === 'dark' ? (theme.darkColors || theme.colors) : theme.colors
+  const typo = {
+    fontSans: DEFAULT_FONT_SANS,
+    fontMono: DEFAULT_FONT_MONO,
+    ...(theme.typography || {})
+  }
+  const rendered = renderedModeFor(c, mode)
+  const isDark = rendered === 'dark'
+  const midground = c.midground || c.ring
+
+  root.style.setProperty('color-scheme', rendered)
+  root.dataset.hermesTheme = theme.name
+  root.dataset.hermesMode = rendered
+  root.classList.toggle('dark', isDark)
+
+  const seeds = {
+    '--theme-foreground': c.foreground,
+    '--theme-primary': c.primary,
+    '--theme-secondary': c.secondary,
+    '--theme-accent-soft': c.accent,
+    '--theme-midground': midground,
+    '--theme-warm': c.primary,
+    '--theme-background-seed': c.background,
+    '--theme-sidebar-seed': c.sidebarBackground || c.background,
+    '--theme-card-seed': c.card,
+    '--theme-elevated-seed': c.popover,
+    '--theme-bubble-seed': c.userBubble || c.popover
+  }
+  const palette = {
+    '--dt-primary-foreground': c.primaryForeground,
+    '--dt-secondary-foreground': c.secondaryForeground,
+    '--dt-accent-foreground': c.accentForeground,
+    '--dt-border': c.border,
+    '--dt-input': c.input,
+    '--dt-ring': c.ring,
+    '--dt-muted': c.muted,
+    '--dt-midground-foreground': c.midgroundForeground || readableOn(midground),
+    '--dt-composer-ring': c.composerRing || midground,
+    '--dt-destructive': c.destructive,
+    '--dt-destructive-foreground': c.destructiveForeground,
+    '--dt-sidebar-border': c.sidebarBorder || c.border,
+    '--dt-user-bubble-border': c.userBubbleBorder || c.border,
+    '--dt-font-sans': typo.fontSans,
+    '--dt-font-mono': typo.fontMono,
+    '--noise-opacity-mul': isDark ? 'calc(0.04 / 0.21)' : 'calc(0.34 / 0.21)'
+  }
+  for (const [key, value] of Object.entries({ ...seeds, ...mixesFor(isDark), ...palette })) {
+    if (value) root.style.setProperty(key, value)
+  }
+
+  const chromeBg = mix(c.background, NEUTRAL_CHROME[isDark ? 'dark' : 'light'], isDark ? 0.26 : 0.08)
+  try {
+    window.hermesDesktop?.setTitleBarTheme?.({ background: chromeBg, foreground: c.foreground })
+    window.hermesDesktop?.setNativeTheme?.(rendered)
+  } catch {
+    // Native chrome hooks are optional; the renderer repaint is already done.
+  }
+  try {
+    window.localStorage.setItem('hermes-boot-background', chromeBg)
+    window.localStorage.setItem('hermes-boot-color-scheme', rendered)
+  } catch {
+    // Restricted storage must not block the current in-place repaint.
+  }
+
+}
+
+function isLegacyPickerTheme(existing, theme) {
+  const legacyLabel = theme.name.charAt(0).toUpperCase() + theme.name.slice(1)
+  const expectedPalette = theme.darkColors || theme.colors
+  const expected = JSON.stringify(expectedPalette)
+  return Boolean(existing && existing.colors && existing.darkColors &&
+    existing.label === legacyLabel && existing.description === theme.description &&
+    JSON.stringify(existing.colors) === expected &&
+    JSON.stringify(existing.darkColors) === expected)
+}
+
 function persistThemesForBoot(themes) {
   try {
     const raw = window.localStorage.getItem(USER_THEMES_KEY)
-    const stored = raw ? JSON.parse(raw) : {}
-    if (!stored || typeof stored !== 'object' || Array.isArray(stored)) return
+    const parsed = raw ? JSON.parse(raw) : {}
+    const stored = parsed && typeof parsed === 'object' && !Array.isArray(parsed) ? parsed : {}
 
     let changed = false
     for (const theme of themes) {
       // Native imports take precedence over a plugin contribution with the same
       // name, matching the desktop's user-theme resolution order.
-      if (!stored[theme.name]) {
+      const existing = stored[theme.name]
+      if (!existing || existing.themePickerManaged || isLegacyPickerTheme(existing, theme)) {
         stored[theme.name] = theme
         changed = true
       }
     }
     if (changed) window.localStorage.setItem(USER_THEMES_KEY, JSON.stringify(stored))
+    return true
   } catch {
     // Storage is best-effort; the current session can still use contributed themes.
+    return false
   }
+}
+
+function readRecord(key) {
+  try {
+    const parsed = JSON.parse(window.localStorage.getItem(key) || '{}')
+    return parsed && typeof parsed === 'object' && !Array.isArray(parsed) ? parsed : {}
+  } catch {
+    return {}
+  }
+}
+
+function persistAppearance(themeName, mode, profile = 'default') {
+  try {
+    if (profile === 'default') {
+      window.localStorage.setItem(SKIN_KEY, themeName)
+      window.localStorage.setItem(MODE_KEY, mode)
+      return true
+    }
+    window.localStorage.setItem(PROFILE_SKINS_KEY, JSON.stringify({ ...readRecord(PROFILE_SKINS_KEY), [profile]: themeName }))
+    window.localStorage.setItem(PROFILE_MODES_KEY, JSON.stringify({ ...readRecord(PROFILE_MODES_KEY), [profile]: mode }))
+    return true
+  } catch {
+    return false
+  }
+}
+
+function readAppearance(profile = 'default') {
+  try {
+    const theme = profile === 'default'
+      ? window.localStorage.getItem(SKIN_KEY)
+      : readRecord(PROFILE_SKINS_KEY)[profile] || window.localStorage.getItem(SKIN_KEY)
+    const mode = profile === 'default'
+      ? window.localStorage.getItem(MODE_KEY)
+      : readRecord(PROFILE_MODES_KEY)[profile] || window.localStorage.getItem(MODE_KEY)
+    return { theme: theme || 'nous', mode: mode === 'dark' ? 'dark' : 'light' }
+  } catch {
+    return { theme: 'nous', mode: 'light' }
+  }
+}
+
+function desktopModeFor(profile, renderedMode) {
+  return renderedMode === 'light' || renderedMode === 'dark'
+    ? renderedMode
+    : readAppearance(profile).mode
+}
+
+function sceneForThemeName(themeName) {
+  return SKINS.find(item =>
+    item.name === themeName || item.lightName === themeName || item.darkName === themeName ||
+    item.gatewayLightName === themeName || item.gatewayDarkName === themeName
+  )
+}
+
+function sceneNameFor(themeName) {
+  const scene = sceneForThemeName(themeName)
+  return scene ? scene.name : themeName
+}
+
+function migrateAppearanceAliases() {
+  let storedThemes = {}
+  try {
+    const parsed = JSON.parse(window.localStorage.getItem(USER_THEMES_KEY) || '{}')
+    if (parsed && typeof parsed === 'object' && !Array.isArray(parsed)) storedThemes = parsed
+  } catch {
+    // A malformed cache must not block ordinary alias migration.
+  }
+
+  const alias = name => {
+    if (name === 'default') return { name: 'nous', mode: null }
+    const lightScene = SKINS.find(item =>
+      (item.lightName === name && item.lightName !== item.name) || item.gatewayLightName === name
+    )
+    if (lightScene) return { name: lightScene.name, mode: 'light' }
+    // Paired source packs conventionally use the dark source name as the new
+    // combined scene name. Only infer dark mode when the selected cached theme
+    // is the legacy picker-managed single-palette shape; otherwise the same
+    // scene name may be an intentional current Light selection or user import.
+    const canonicalDarkScene = SKINS.find(item =>
+      item.modeSupport === 'dynamic' && item.darkName === name && item.name === name
+    )
+    if (canonicalDarkScene) {
+      const combined = sceneToDesktopTheme(canonicalDarkScene)
+      if (isLegacyPickerTheme(storedThemes[name], combined)) {
+        return { name: canonicalDarkScene.name, mode: 'dark' }
+      }
+    }
+    const darkScene = SKINS.find(item =>
+      (item.darkName === name && item.darkName !== item.name) || item.gatewayDarkName === name
+    )
+    return darkScene ? { name: darkScene.name, mode: 'dark' } : null
+  }
+
+  try {
+    const globalTheme = window.localStorage.getItem(SKIN_KEY)
+    const globalAlias = alias(globalTheme)
+    if (globalAlias) {
+      window.localStorage.setItem(SKIN_KEY, globalAlias.name)
+      if (globalAlias.mode) window.localStorage.setItem(MODE_KEY, globalAlias.mode)
+    }
+
+    const themes = readRecord(PROFILE_SKINS_KEY)
+    const modes = readRecord(PROFILE_MODES_KEY)
+    let changed = false
+    for (const [profile, name] of Object.entries(themes)) {
+      const match = alias(name)
+      if (!match) continue
+      themes[profile] = match.name
+      if (match.mode) modes[profile] = match.mode
+      changed = true
+    }
+    if (changed) {
+      window.localStorage.setItem(PROFILE_SKINS_KEY, JSON.stringify(themes))
+      window.localStorage.setItem(PROFILE_MODES_KEY, JSON.stringify(modes))
+    }
+  } catch {
+    // Migration is best-effort and must not prevent plugin registration.
+  }
+}
+
+function columnsForWidth(width) {
+  if (width >= 900) return 4
+  if (width >= 620) return 3
+  return 2
+}
+
+function buildThemeGroups(scenes) {
+  return [
+    { id: 'dynamic', title: 'Dynamic Scenes', scenes: scenes.filter(scene => scene.modeSupport === 'dynamic') },
+    { id: 'dark', title: 'Dark Mode Only', scenes: scenes.filter(scene => scene.modeSupport === 'dark') },
+    { id: 'light', title: 'Light Mode Only', scenes: scenes.filter(scene => scene.modeSupport === 'light') }
+  ]
 }
 
 // ---------------------------------------------------------------------------
@@ -207,27 +478,29 @@ function persistThemesForBoot(themes) {
 // ---------------------------------------------------------------------------
 
 function useActiveSkin() {
-  const [active, setActive] = useState('')
+  const profile = useValue(host.state.profile) || 'default'
+  const [active, setActive] = useState(() => sceneNameFor(readAppearance(profile).theme))
   const [live, setLive] = useState([])
 
   useEffect(() => {
     let mounted = true
+    setActive(sceneNameFor(readAppearance(profile).theme))
 
-    host
-      .request('config.get', { key: 'skin' })
-      .then(res => {
-        if (mounted && res && res.value) setActive(res.value)
-      })
-      .catch(() => {})
+    const root = document.documentElement
+    const sync = () => {
+      if (mounted && root.dataset.hermesTheme) setActive(sceneNameFor(root.dataset.hermesTheme))
+    }
+    sync()
+    const observer = new MutationObserver(sync)
+    observer.observe(root, { attributes: true, attributeFilter: ['data-hermes-theme'] })
 
     const off = host.onEvent('skin.changed', event => {
       if (!mounted) return
       const skin = event && event.payload
       const name = skin && skin.name
       if (!name) return
-      setActive(name)
       // Live-discover skins outside the embedded catalog (freshly installed).
-      if (!SKINS.some(s => s.name === name)) {
+      if (!sceneForThemeName(name)) {
         setLive(prev => {
           if (prev.some(s => s.name === name)) return prev
           return [...prev, normalizeLiveSkin(skin)]
@@ -237,9 +510,10 @@ function useActiveSkin() {
 
     return () => {
       mounted = false
+      observer.disconnect()
       off()
     }
-  }, [])
+  }, [profile])
 
   return [active, setActive, live]
 }
@@ -249,34 +523,137 @@ function normalizeLiveSkin(skin) {
   const isHex = v => typeof v === 'string' && /^#([0-9a-f]{6})$/i.test(v)
   const bg = isHex(colors.background) ? colors.background : isHex(colors.status_bar_bg) ? colors.status_bar_bg : ''
   const text = isHex(colors.banner_text) ? colors.banner_text : isHex(colors.ui_text) ? colors.ui_text : ''
+  const isDark = bg ? luminance(bg) < 0.5 : text ? luminance(text) < 0.5 : true
   return {
     name: skin.name,
+    label: skin.name.replace(/-/g, ' ').replace(/\b\w/g, c => c.toUpperCase()),
     description: skin.description || 'Newly installed skin',
     category: 'New',
     source: 'live',
-    isDark: bg ? luminance(bg) < 0.5 : text ? luminance(text) < 0.5 : true,
+    modeSupport: isDark ? 'dark' : 'light',
+    lightColors: isDark ? null : colors,
+    darkColors: isDark ? colors : null,
+    lightName: isDark ? null : skin.name,
+    darkName: isDark ? skin.name : null,
     colors
   }
 }
 
-async function applySkin(name, setActive) {
-  try {
-    await host.request('config.set', { key: 'skin', value: name })
-    haptic('tap')
-    setActive(name)
-    host.notify({ kind: 'success', message: `Theme applied: ${name}` })
-  } catch (e) {
-    host.notify({ kind: 'error', message: `Could not apply "${name}" — gateway offline? It is still available in Settings → Appearance.` })
+function gatewaySkinNameFor(scene, mode) {
+  return mode === 'dark'
+    ? scene.gatewayDarkName || scene.darkName || scene.name
+    : scene.gatewayLightName || scene.lightName || scene.name
+}
+
+function persistLatestAppearance(profile) {
+  const latest = latestAppearanceByProfile.get(profile)
+  return latest ? persistAppearance(latest.scene.name, latest.mode, profile) : true
+}
+
+function snapshotPersistedAppearances() {
+  const themes = readRecord(PROFILE_SKINS_KEY)
+  const modes = readRecord(PROFILE_MODES_KEY)
+  const profiles = new Set(['default', ...Object.keys(themes), ...Object.keys(modes)])
+  const snapshot = new Map()
+  for (const profile of profiles) {
+    const appearance = readAppearance(profile)
+    const scene = sceneForThemeName(appearance.theme)
+    if (scene) snapshot.set(profile, { scene, mode: appearance.mode })
   }
+  return snapshot
+}
+
+function syncSceneToGateway(scene, mode, profile, generation) {
+  const skinName = gatewaySkinNameFor(scene, mode)
+  const perform = async () => {
+    if ((host.state.profile.get() || 'default') !== profile) return false
+    // Capture every persisted profile before config.set can broadcast and let
+    // Desktop overwrite the newly active profile with this request's alias.
+    const recoveryAppearances = snapshotPersistedAppearances()
+    try {
+      await host.request('config.set', { key: 'skin', value: skinName })
+      // The broadcast applies the concrete gateway variant in Desktop before
+      // this RPC resolves. ThemeProvider may apply that concrete skin through
+      // its stale internal mode (the SDK has no setMode), so restore the latest
+      // combined scene both visibly and durably. A stale acknowledgement must
+      // never overwrite or repaint over a newer rapid selection.
+      const latest = latestAppearanceByProfile.get(profile)
+      const activeProfile = host.state.profile.get() || 'default'
+      const isActiveProfile = activeProfile === profile
+      if (latest && isActiveProfile) {
+        applyDesktopTheme(sceneToDesktopTheme(latest.scene), latest.mode)
+      } else if (!isActiveProfile) {
+        // config.set broadcasts before resolving, so this old-profile request
+        // may have just repainted the profile the user switched into. Restore
+        // that active profile from its own latest selection, never from the
+        // completed request's old-profile map entry.
+        const activeRecovery = latestAppearanceByProfile.get(activeProfile) ||
+          recoveryAppearances.get(activeProfile) || recoveryAppearances.get('default')
+        if (activeRecovery) {
+          applyDesktopTheme(sceneToDesktopTheme(activeRecovery.scene), activeRecovery.mode)
+          persistAppearance(activeRecovery.scene.name, activeRecovery.mode, activeProfile)
+        }
+      }
+      const durable = persistLatestAppearance(profile)
+      if (!durable && latestAppearanceByProfile.get(profile)?.generation === generation) {
+        host.notify({
+          kind: 'warning',
+          message: `${scene.label || scene.name} synchronized, but its combined scene could not be saved for restart`
+        })
+      }
+      return true
+    } catch {
+      const latest = latestAppearanceByProfile.get(profile)
+      const isLatest = latest?.generation === generation
+      const isActiveProfile = (host.state.profile.get() || 'default') === profile
+      if (isLatest && isActiveProfile) {
+        // An older queued request may already have broadcast and repainted the
+        // root before this latest request failed. Reassert the user's latest
+        // optimistic selection in the live Desktop as well as in persistence.
+        applyDesktopTheme(sceneToDesktopTheme(latest.scene), latest.mode)
+      }
+      persistLatestAppearance(profile)
+      if (isLatest && isActiveProfile) {
+        host.notify({
+          kind: 'warning',
+          message: `${scene.label || scene.name} is active here, but the connected gateway could not apply "${skinName}"`
+        })
+      }
+      return false
+    }
+  }
+  const queued = gatewaySyncQueue.then(perform, perform)
+  gatewaySyncQueue = queued.then(() => undefined, () => undefined)
+  return queued
+}
+
+function applyScene(scene, mode, setActive) {
+  const profile = host.state.profile.get() || 'default'
+  const generation = ++applyGeneration
+  latestAppearanceByProfile.set(profile, { generation, scene, mode })
+  const theme = sceneToDesktopTheme(scene)
+  const bootThemeSaved = CORE_DESKTOP_THEMES.has(scene.name) || persistThemesForBoot([theme])
+  applyDesktopTheme(theme, mode)
+  const appearanceSaved = persistAppearance(scene.name, mode, profile)
+  const persisted = bootThemeSaved && appearanceSaved
+  haptic('tap')
+  setActive(scene.name)
+  if (!persisted) {
+    host.notify({
+      kind: 'warning',
+      message: `${scene.label || scene.name} applied for this session but could not be saved for restart`
+    })
+  }
+  return syncSceneToGateway(scene, mode, profile, generation)
 }
 
 // ---------------------------------------------------------------------------
 // Picker UI (shared by the pane and the full page)
 // ---------------------------------------------------------------------------
 
-function ThemeCard({ skin, active, applying, onApply }) {
-  const c = skin.colors || {}
-  const isActive = skin.name === active
+function ThemeCard({ scene, mode, active, applying, onApply }) {
+  const c = (mode === 'dark' ? scene.darkColors : scene.lightColors) || scene.colors || {}
+  const isActive = scene.name === active
   const strip = [
     c.background || c.status_bar_bg,
     c.ui_accent || c.banner_accent || c.banner_title,
@@ -287,9 +664,9 @@ function ThemeCard({ skin, active, applying, onApply }) {
 
   return jsxs('button', {
     type: 'button',
-    onClick: () => onApply(skin.name),
-    disabled: applying === skin.name,
-    title: `${skin.description || skin.name} (${skin.isDark ? 'dark' : 'light'})`,
+    onClick: () => onApply(scene),
+    disabled: applying === scene.name,
+    title: `${scene.description || scene.name} (${scene.modeSupport === 'dynamic' ? `${mode} variant` : `${scene.modeSupport} only`})`,
     className: cn(
       'group flex w-full flex-col gap-1 rounded-lg border p-1.5 text-left transition-colors',
       isActive
@@ -310,34 +687,37 @@ function ThemeCard({ skin, active, applying, onApply }) {
             className: 'flex min-w-0 items-center gap-1',
             children: [
               jsx('span', {
-                className: cn('shrink-0 text-[0.6875rem] leading-none', skin.isDark ? 'text-(--ui-accent)' : 'text-(--ui-warn)'),
-                children: skin.isDark ? '☾' : '☀'
+                className: cn('shrink-0 text-[0.6875rem] leading-none', mode === 'dark' ? 'text-(--ui-accent)' : 'text-(--ui-warn)'),
+                children: scene.modeSupport === 'dynamic' ? '⇄' : scene.modeSupport === 'dark' ? '☾' : '☀'
               }),
-              jsx('span', { className: 'truncate text-[0.6875rem] font-medium capitalize', children: skin.name.replace(/-/g, ' ') })
+              jsx('span', { className: 'truncate text-[0.6875rem] font-medium', children: scene.label || scene.name.replace(/-/g, ' ') })
             ]
           }),
           isActive
             ? jsx(Badge, { variant: 'outline', className: 'shrink-0 px-1 text-[0.5625rem] text-(--ui-accent)', children: 'ACTIVE' })
-            : jsx('span', { className: 'shrink-0 text-[0.5625rem] uppercase tracking-wide text-(--ui-text-tertiary)', children: skin.category })
+            : jsx('span', { className: 'shrink-0 text-[0.5625rem] uppercase tracking-wide text-(--ui-text-tertiary)', children: scene.modeSupport === 'dynamic' ? mode : scene.modeSupport })
         ]
       })
     ]
   })
 }
 
-/**
- * The full picker surface. `cols` controls the grid density (4-5 on the page).
- * Uses flex-wrap + inline widths because the app's Tailwind build only ships
- * grid-cols-1/2/4/6.
- */
-function ThemePicker({ cols = 4 }) {
+function ThemePicker() {
   const [active, setActive, live] = useActiveSkin()
   const [q, setQ] = useState('')
-  const [pol, setPol] = useState('all')
   const [applying, setApplying] = useState(null)
+  const profile = useValue(host.state.profile) || 'default'
+  const viewport = useValue(host.state.viewport)
+  const [mode, setMode] = useState(() => desktopModeFor(profile, document.documentElement.dataset.hermesMode))
 
-  const gateway = useValue(host.state.gateway)
-  const offline = gateway !== 'open'
+  useEffect(() => {
+    const root = document.documentElement
+    const sync = () => setMode(desktopModeFor(profile, root.dataset.hermesMode))
+    sync()
+    const observer = new MutationObserver(sync)
+    observer.observe(root, { attributes: true, attributeFilter: ['data-hermes-mode'] })
+    return () => observer.disconnect()
+  }, [profile])
 
   const allSkins = useMemo(() => {
     const known = new Set(SKINS.map(s => s.name))
@@ -347,21 +727,34 @@ function ThemePicker({ cols = 4 }) {
   const filtered = useMemo(() => {
     const ql = q.trim().toLowerCase()
     return allSkins.filter(s => {
-      if (pol === 'dark' && !s.isDark) return false
-      if (pol === 'light' && s.isDark) return false
-      if (ql && !s.name.toLowerCase().includes(ql) && !(s.description || '').toLowerCase().includes(ql)) return false
+      if (ql && !`${s.name} ${s.label || ''} ${s.description || ''}`.toLowerCase().includes(ql)) return false
       return true
     })
-  }, [allSkins, q, pol])
+  }, [allSkins, q])
 
-  const onApply = async name => {
-    setApplying(name)
-    await applySkin(name, setActive)
-    setApplying(null)
+  const onApply = scene => {
+    const nextMode = scene.modeSupport === 'dynamic' ? mode : scene.modeSupport
+    setApplying(scene.name)
+    try {
+      applyScene(scene, nextMode, setActive)
+    } finally {
+      setApplying(null)
+    }
   }
 
+  const onModeChange = next => {
+    if (next !== 'light' && next !== 'dark') return
+    setMode(next)
+    const scene = allSkins.find(item => item.name === active)
+    if (scene) applyScene(scene, next, setActive)
+  }
+
+  const cols = columnsForWidth(viewport.width)
   const gap = cols > 2 ? 12 : 8
   const cardWidth = `calc((100% - ${gap * (cols - 1)}px) / ${cols})`
+  const groups = buildThemeGroups(filtered).filter(group => group.scenes.length)
+  const activeScene = allSkins.find(scene => scene.name === active)
+  const activeColors = activeScene && ((mode === 'dark' ? activeScene.darkColors : activeScene.lightColors) || activeScene.colors)
 
   return jsxs('div', {
     className: 'flex h-full min-h-0 flex-col',
@@ -382,9 +775,9 @@ function ThemePicker({ cols = 4 }) {
                         children: [
                           jsx('span', {
                             className: 'h-2 w-2 shrink-0 rounded-full',
-                            style: { backgroundColor: (allSkins.find(s => s.name === active) || {}).colors?.ui_accent || 'var(--ui-accent)' }
+                            style: { backgroundColor: activeColors?.ui_accent || activeColors?.banner_accent || 'var(--ui-accent)' }
                           }),
-                          jsx('span', { className: 'truncate text-[0.6875rem] capitalize text-(--ui-text-secondary)', children: active.replace(/-/g, ' ') })
+                          jsx('span', { className: 'truncate text-[0.6875rem] text-(--ui-text-secondary)', children: activeScene?.label || active.replace(/-/g, ' ') })
                         ]
                       })
                     : null,
@@ -394,36 +787,49 @@ function ThemePicker({ cols = 4 }) {
             ]
           }),
           jsx(SearchField, {
-            placeholder: 'Search skins…',
+            placeholder: 'Search scenes…',
             value: q,
             onChange: v => setQ(typeof v === 'string' ? v : '')
           }),
           jsx(SegmentedControl, {
             options: [
-              { id: 'all', label: 'All' },
-              { id: 'dark', label: '☾ Dark' },
-              { id: 'light', label: '☀ Light' }
+              { id: 'dark', label: '☾ Dark mode' },
+              { id: 'light', label: '☀ Light mode' }
             ],
-            value: pol,
-            onChange: v => setPol(typeof v === 'string' ? v : 'all')
-          }),
-          offline
-            ? jsx('div', {
-                className: 'text-[0.6875rem] text-(--ui-text-tertiary)',
-                children: `Gateway ${gateway} — apply still works in Settings → Appearance (all skins are registered there too).`
-              })
-            : null
+            value: mode,
+            onChange: onModeChange
+          })
         ]
       }),
       jsx(ScrollArea, {
         className: 'min-h-0 flex-1 p-2',
         children:
           filtered.length === 0
-            ? jsx(EmptyState, { title: 'No skins found', description: 'Try a different search or filter.' })
+            ? jsx(EmptyState, { title: 'No scenes found', description: 'Try a different search.' })
             : jsx('div', {
-                className: 'flex flex-wrap gap-2',
-                children: filtered.map(skin =>
-                  jsx('div', { key: skin.name, style: { width: cardWidth }, children: jsx(ThemeCard, { skin, active, applying, onApply }) })
+                className: 'flex flex-col gap-4',
+                children: groups.map((group, index) =>
+                  jsxs('section', {
+                    key: group.id,
+                    className: index ? 'border-t border-(--ui-stroke-secondary) pt-4' : '',
+                    children: [
+                      jsx('div', {
+                        className: 'mb-2 text-[0.6875rem] font-semibold uppercase tracking-wide text-(--ui-text-tertiary)',
+                        children: `${group.title} (${group.scenes.length})`
+                      }),
+                      jsx('div', {
+                        className: 'flex flex-wrap',
+                        style: { gap },
+                        children: group.scenes.map(scene =>
+                          jsx('div', {
+                            key: scene.name,
+                            style: { width: cardWidth },
+                            children: jsx(ThemeCard, { scene, mode: scene.modeSupport === 'dynamic' ? mode : scene.modeSupport, active, applying, onApply })
+                          })
+                        )
+                      })
+                    ]
+                  })
                 )
               })
       })
@@ -444,14 +850,14 @@ function ThemeChip() {
       haptic('tap')
       host.navigate(PAGE_PATH)
     },
-    title: `Active theme: ${active || 'default'} — open Theme Picker`,
+    title: `Active theme: ${active || 'nous'} — open Theme Picker`,
     className: 'flex h-full items-center gap-1 px-1.5 text-[0.6875rem] text-(--ui-text-secondary) transition-colors hover:bg-(--chrome-action-hover) hover:text-foreground',
     children: [
       jsx('span', {
         className: 'h-2 w-2 shrink-0 rounded-full',
         style: { backgroundColor: (SKINS.find(s => s.name === active) || {}).colors?.ui_accent || 'var(--ui-accent)' }
       }),
-      jsx('span', { className: 'max-w-24 truncate', children: active ? active.replace(/-/g, ' ') : 'default' })
+      jsx('span', { className: 'max-w-24 truncate', children: active ? (SKINS.find(s => s.name === active)?.label || active.replace(/-/g, ' ')) : 'Nous' })
     ]
   })
 }
@@ -464,12 +870,13 @@ export default {
   id: ID,
   name: 'Theme Picker',
   register(ctx) {
-    // Register every USER skin as a desktop theme so it shows up in Settings →
-    // Appearance and can be applied there (offline-safe). Built-ins are skipped:
-    // the desktop already ships its own presets for those names.
+    migrateAppearanceAliases()
+    // Register each scene as one Desktop theme. Matched scenes carry a true
+    // light palette plus darkColors, so Desktop's mode switch changes polarity
+    // without creating duplicate Appearance entries. Core names stay native.
     const userThemes = SKINS
-      .filter(skin => skin.source !== 'builtin')
-      .map(skinToDesktopTheme)
+      .filter(scene => !CORE_DESKTOP_THEMES.has(scene.name))
+      .map(sceneToDesktopTheme)
       .filter(Boolean)
     persistThemesForBoot(userThemes)
     for (const theme of userThemes) {

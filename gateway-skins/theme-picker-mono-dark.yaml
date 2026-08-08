@@ -1,0 +1,11 @@
+name: theme-picker-mono-dark
+description: Theme Picker transport for Mono (dark)
+colors:
+  background: '#0E0E0E'
+  ui_text: '#EAEAEA'
+  banner_text: '#EAEAEA'
+  ui_accent: '#9A9A9A'
+  banner_accent: '#9A9A9A'
+  ui_tool: '#9A9A9A'
+  ui_border: '#2A2A2A'
+  banner_border: '#2A2A2A'

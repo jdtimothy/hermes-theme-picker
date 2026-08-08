@@ -1,0 +1,21 @@
+name: theme-picker-dark-aubergine-light
+description: Theme Picker transport for Aubergine (light)
+colors:
+  background: '#f6f3fb'
+  ui_accent: '#7a5fc0'
+  banner_accent: '#7a5fc0'
+  banner_title: '#2a2438'
+  banner_text: '#2a2438'
+  ui_text: '#2a2438'
+  banner_dim: '#6f6590'
+  banner_border: '#ddd5ec'
+  ui_border: '#ddd5ec'
+  ui_ok: '#2f8e52'
+  ui_warn: '#a17a17'
+  ui_error: '#c65a5a'
+  prompt: '#2a2438'
+  status_bar_bg: '#f7f4fb'
+  status_bar_text: '#2a2438'
+  session_border: '#ddd5ec'
+  ui_tool: '#7a5fc0'
+  completion_menu_bg: '#eae7ef'

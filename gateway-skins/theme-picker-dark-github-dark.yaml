@@ -1,0 +1,21 @@
+name: theme-picker-dark-github-dark
+description: Theme Picker transport for Github (dark)
+colors:
+  background: '#0d1117'
+  ui_accent: '#2f81f7'
+  banner_accent: '#2f81f7'
+  banner_title: '#e6edf3'
+  banner_text: '#e6edf3'
+  ui_text: '#e6edf3'
+  banner_dim: '#9198a1'
+  banner_border: '#30363d'
+  ui_border: '#30363d'
+  ui_ok: '#3fb950'
+  ui_warn: '#d29922'
+  ui_error: '#f85149'
+  prompt: '#e6edf3'
+  status_bar_bg: '#0c1015'
+  status_bar_text: '#e6edf3'
+  session_border: '#30363d'
+  ui_tool: '#6cb0fa'
+  completion_menu_bg: '#0c1015'

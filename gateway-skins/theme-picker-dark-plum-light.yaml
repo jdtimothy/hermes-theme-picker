@@ -1,0 +1,21 @@
+name: theme-picker-dark-plum-light
+description: Theme Picker transport for Plum (light)
+colors:
+  background: '#f6eff7'
+  ui_accent: '#7d4a96'
+  banner_accent: '#7d4a96'
+  banner_title: '#33203f'
+  banner_text: '#33203f'
+  ui_text: '#33203f'
+  banner_dim: '#6d5280'
+  banner_border: '#dccce2'
+  ui_border: '#dccce2'
+  ui_ok: '#3f7d4e'
+  ui_warn: '#a87a1f'
+  ui_error: '#b23a3a'
+  prompt: '#33203f'
+  status_bar_bg: '#eae0ee'
+  status_bar_text: '#33203f'
+  session_border: '#dccce2'
+  ui_tool: '#6a3f82'
+  completion_menu_bg: '#ffffff'

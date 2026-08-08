@@ -1,0 +1,11 @@
+name: theme-picker-cyberpunk-dark
+description: Theme Picker transport for Cyberpunk (dark)
+colors:
+  background: '#000A00'
+  ui_text: '#00FF41'
+  banner_text: '#00FF41'
+  ui_accent: '#00FF41'
+  banner_accent: '#00FF41'
+  ui_tool: '#00FF41'
+  ui_border: '#003000'
+  banner_border: '#003000'

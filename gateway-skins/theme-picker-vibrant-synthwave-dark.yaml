@@ -1,0 +1,21 @@
+name: theme-picker-vibrant-synthwave-dark
+description: Theme Picker transport for Vibrant Synthwave (dark)
+colors:
+  background: '#1a0b2e'
+  ui_accent: '#ff8ac0'
+  banner_accent: '#ff8ac0'
+  banner_title: '#f5e9ff'
+  banner_text: '#f5e9ff'
+  ui_text: '#f5e9ff'
+  banner_dim: '#b78fd4'
+  banner_border: '#3c1f5c'
+  ui_border: '#3c1f5c'
+  ui_ok: '#4ade80'
+  ui_warn: '#fbbf24'
+  ui_error: '#f87171'
+  prompt: '#f5e9ff'
+  status_bar_bg: '#170a29'
+  status_bar_text: '#f5e9ff'
+  session_border: '#3c1f5c'
+  ui_tool: '#ff2e88'
+  completion_menu_bg: '#27183b'

@@ -1,0 +1,21 @@
+name: theme-picker-nature-autumn-light
+description: Theme Picker transport for Nature Autumn (light)
+colors:
+  background: '#fdf1e6'
+  ui_accent: '#b04f22'
+  banner_accent: '#b04f22'
+  banner_title: '#43281c'
+  banner_text: '#43281c'
+  ui_text: '#43281c'
+  banner_dim: '#8a624a'
+  banner_border: '#ecd2b8'
+  ui_border: '#ecd2b8'
+  ui_ok: '#3f7d4e'
+  ui_warn: '#a87a1f'
+  ui_error: '#b23a3a'
+  prompt: '#43281c'
+  status_bar_bg: '#f6e2cc'
+  status_bar_text: '#43281c'
+  session_border: '#ecd2b8'
+  ui_tool: '#9a451e'
+  completion_menu_bg: '#ffffff'

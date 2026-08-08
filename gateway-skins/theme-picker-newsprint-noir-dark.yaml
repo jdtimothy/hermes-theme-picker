@@ -1,0 +1,21 @@
+name: theme-picker-newsprint-noir-dark
+description: Theme Picker transport for Newsprint Noir (dark)
+colors:
+  background: '#101012'
+  ui_accent: '#84849c'
+  banner_accent: '#787890'
+  banner_title: '#d0d0d8'
+  banner_text: '#d8d8e0'
+  ui_text: '#d8d8e0'
+  banner_dim: '#808090'
+  banner_border: '#505870'
+  ui_border: '#505870'
+  ui_ok: '#60a070'
+  ui_warn: '#c0a860'
+  ui_error: '#b05850'
+  prompt: '#d8d8e0'
+  status_bar_bg: '#08080a'
+  status_bar_text: '#888898'
+  session_border: '#383848'
+  ui_tool: '#6090a0'
+  completion_menu_bg: '#101012'

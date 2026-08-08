@@ -1,0 +1,21 @@
+name: theme-picker-dark-bone-dark
+description: Theme Picker transport for Bone (dark)
+colors:
+  background: '#1a1814'
+  ui_accent: '#c9c2b4'
+  banner_accent: '#c9c2b4'
+  banner_title: '#f5f2ec'
+  banner_text: '#f5f2ec'
+  ui_text: '#f5f2ec'
+  banner_dim: '#8f8a80'
+  banner_border: '#34302a'
+  ui_border: '#34302a'
+  ui_ok: '#4ade80'
+  ui_warn: '#fbbf24'
+  ui_error: '#f87171'
+  prompt: '#f5f2ec'
+  status_bar_bg: '#181612'
+  status_bar_text: '#f5f2ec'
+  session_border: '#34302a'
+  ui_tool: '#e8e2d6'
+  completion_menu_bg: '#181612'

@@ -1,0 +1,21 @@
+name: theme-picker-minimal-graphite-light
+description: Theme Picker transport for Minimal Graphite (light)
+colors:
+  background: '#f4f5f7'
+  ui_accent: '#5b6572'
+  banner_accent: '#5b6572'
+  banner_title: '#2e3033'
+  banner_text: '#2e3033'
+  ui_text: '#2e3033'
+  banner_dim: '#565d66'
+  banner_border: '#c9cdd3'
+  ui_border: '#c9cdd3'
+  ui_ok: '#3f7d4e'
+  ui_warn: '#a87a1f'
+  ui_error: '#b23a3a'
+  prompt: '#2e3033'
+  status_bar_bg: '#e6e8eb'
+  status_bar_text: '#2e3033'
+  session_border: '#c9cdd3'
+  ui_tool: '#6b7684'
+  completion_menu_bg: '#ffffff'

@@ -1,0 +1,11 @@
+name: theme-picker-hermes-teal-dark
+description: Theme Picker transport for Hermes Teal (dark)
+colors:
+  background: '#041C1C'
+  ui_text: '#FFE6CB'
+  banner_text: '#FFE6CB'
+  ui_accent: '#33C4BA'
+  banner_accent: '#33C4BA'
+  ui_tool: '#33C4BA'
+  ui_border: '#205654'
+  banner_border: '#205654'

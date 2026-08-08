@@ -1,0 +1,21 @@
+name: theme-picker-dark-charcoal-dark
+description: Theme Picker transport for Charcoal (dark)
+colors:
+  background: '#16181d'
+  ui_accent: '#8ec5ff'
+  banner_accent: '#8ec5ff'
+  banner_title: '#e6e9ef'
+  banner_text: '#e6e9ef'
+  ui_text: '#e6e9ef'
+  banner_dim: '#8b919c'
+  banner_border: '#262a33'
+  ui_border: '#262a33'
+  ui_ok: '#4ade80'
+  ui_warn: '#fbbf24'
+  ui_error: '#f87171'
+  prompt: '#e6e9ef'
+  status_bar_bg: '#14161a'
+  status_bar_text: '#e6e9ef'
+  session_border: '#262a33'
+  ui_tool: '#4f9cf0'
+  completion_menu_bg: '#22252a'

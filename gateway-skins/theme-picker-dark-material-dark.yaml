@@ -1,0 +1,21 @@
+name: theme-picker-dark-material-dark
+description: Theme Picker transport for Material (dark)
+colors:
+  background: '#263238'
+  ui_accent: '#82aaff'
+  banner_accent: '#82aaff'
+  banner_title: '#eceff1'
+  banner_text: '#eceff1'
+  ui_text: '#eceff1'
+  banner_dim: '#b0bec5'
+  banner_border: '#37474f'
+  ui_border: '#37474f'
+  ui_ok: '#a5d6a7'
+  ui_warn: '#ffe082'
+  ui_error: '#ef9a9a'
+  prompt: '#eceff1'
+  status_bar_bg: '#232e34'
+  status_bar_text: '#eceff1'
+  session_border: '#37474f'
+  ui_tool: '#a9c4ff'
+  completion_menu_bg: '#232e34'

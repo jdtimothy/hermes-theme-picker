@@ -1,0 +1,21 @@
+name: theme-picker-nature-ocean-dark
+description: Theme Picker transport for Nature Ocean (dark)
+colors:
+  background: '#0a1a24'
+  ui_accent: '#4dd8d8'
+  banner_accent: '#4dd8d8'
+  banner_title: '#d8f0f5'
+  banner_text: '#d8f0f5'
+  ui_text: '#d8f0f5'
+  banner_dim: '#7fa8b5'
+  banner_border: '#14303f'
+  ui_border: '#14303f'
+  ui_ok: '#4ade80'
+  ui_warn: '#fbbf24'
+  ui_error: '#f87171'
+  prompt: '#d8f0f5'
+  status_bar_bg: '#081520'
+  status_bar_text: '#d8f0f5'
+  session_border: '#14303f'
+  ui_tool: '#2db4b4'
+  completion_menu_bg: '#122630'

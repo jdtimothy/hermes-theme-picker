@@ -1,0 +1,21 @@
+name: theme-picker-redwood-light
+description: Theme Picker transport for Redwood (light)
+colors:
+  background: '#faf6ef'
+  ui_accent: '#b15435'
+  banner_accent: '#b15435'
+  banner_title: '#33291f'
+  banner_text: '#33291f'
+  ui_text: '#33291f'
+  banner_dim: '#7d6f5e'
+  banner_border: '#e5dccb'
+  ui_border: '#e5dccb'
+  ui_ok: '#2f8e52'
+  ui_warn: '#a17a17'
+  ui_error: '#d05f5f'
+  prompt: '#33291f'
+  status_bar_bg: '#faf7f0'
+  status_bar_text: '#33291f'
+  session_border: '#e5dccb'
+  ui_tool: '#c05b3a'
+  completion_menu_bg: '#eeeae3'

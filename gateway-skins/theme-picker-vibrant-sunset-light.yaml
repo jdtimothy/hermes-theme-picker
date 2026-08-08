@@ -1,0 +1,21 @@
+name: theme-picker-vibrant-sunset-light
+description: Theme Picker transport for Vibrant Sunset (light)
+colors:
+  background: '#fdf0f2'
+  ui_accent: '#b04a62'
+  banner_accent: '#b04a62'
+  banner_title: '#46222c'
+  banner_text: '#46222c'
+  ui_text: '#46222c'
+  banner_dim: '#8a5a68'
+  banner_border: '#e6c8cf'
+  ui_border: '#e6c8cf'
+  ui_ok: '#3f7d4e'
+  ui_warn: '#a87a1f'
+  ui_error: '#b23a3a'
+  prompt: '#46222c'
+  status_bar_bg: '#f6e2e7'
+  status_bar_text: '#46222c'
+  session_border: '#e6c8cf'
+  ui_tool: '#9a3f55'
+  completion_menu_bg: '#ffffff'

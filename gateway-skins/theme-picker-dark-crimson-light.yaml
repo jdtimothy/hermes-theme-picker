@@ -1,0 +1,21 @@
+name: theme-picker-dark-crimson-light
+description: Theme Picker transport for Crimson (light)
+colors:
+  background: '#faf4f5'
+  ui_accent: '#a2556d'
+  banner_accent: '#a2556d'
+  banner_title: '#33262b'
+  banner_text: '#33262b'
+  ui_text: '#33262b'
+  banner_dim: '#7d646d'
+  banner_border: '#ead7dc'
+  ui_border: '#ead7dc'
+  ui_ok: '#2f8e52'
+  ui_warn: '#a17a17'
+  ui_error: '#d05f5f'
+  prompt: '#33262b'
+  status_bar_bg: '#faf5f6'
+  status_bar_text: '#33262b'
+  session_border: '#ead7dc'
+  ui_tool: '#b05c77'
+  completion_menu_bg: '#eee8e9'

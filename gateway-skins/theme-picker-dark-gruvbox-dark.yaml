@@ -1,0 +1,21 @@
+name: theme-picker-dark-gruvbox-dark
+description: Theme Picker transport for Gruvbox (dark)
+colors:
+  background: '#282828'
+  ui_accent: '#fabd2f'
+  banner_accent: '#fabd2f'
+  banner_title: '#ebdbb2'
+  banner_text: '#ebdbb2'
+  ui_text: '#ebdbb2'
+  banner_dim: '#9b8d7f'
+  banner_border: '#504945'
+  ui_border: '#504945'
+  ui_ok: '#b8bb26'
+  ui_warn: '#fabd2f'
+  ui_error: '#fb4934'
+  prompt: '#ebdbb2'
+  status_bar_bg: '#252525'
+  status_bar_text: '#ebdbb2'
+  session_border: '#504945'
+  ui_tool: '#f4c856'
+  completion_menu_bg: '#252525'

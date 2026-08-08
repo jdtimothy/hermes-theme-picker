@@ -1,0 +1,11 @@
+name: theme-picker-nous-dark
+description: Theme Picker transport for Nous (dark)
+colors:
+  background: '#0D2F86'
+  ui_text: '#FFE6CB'
+  banner_text: '#FFE6CB'
+  ui_accent: '#FFE6CB'
+  banner_accent: '#FFE6CB'
+  ui_tool: '#0053FD'
+  ui_border: '#3158AD'
+  banner_border: '#3158AD'

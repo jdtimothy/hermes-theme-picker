@@ -1,0 +1,21 @@
+name: theme-picker-dark-obsidian-light
+description: Theme Picker transport for Obsidian (light)
+colors:
+  background: '#f8f9fa'
+  ui_accent: '#3b6ea5'
+  banner_accent: '#3b6ea5'
+  banner_title: '#1f2328'
+  banner_text: '#1f2328'
+  ui_text: '#1f2328'
+  banner_dim: '#5a6270'
+  banner_border: '#c8cdd4'
+  ui_border: '#c8cdd4'
+  ui_ok: '#3f7d4e'
+  ui_warn: '#a87a1f'
+  ui_error: '#b23a3a'
+  prompt: '#1f2328'
+  status_bar_bg: '#e8eaed'
+  status_bar_text: '#1f2328'
+  session_border: '#c8cdd4'
+  ui_tool: '#2f5f8a'
+  completion_menu_bg: '#ffffff'

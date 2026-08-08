@@ -1,0 +1,21 @@
+name: theme-picker-dark-mac-dark
+description: Theme Picker transport for Mac (dark)
+colors:
+  background: '#1c1a16'
+  ui_accent: '#6ea8d6'
+  banner_accent: '#6ea8d6'
+  banner_title: '#f5f2ec'
+  banner_text: '#f5f2ec'
+  ui_text: '#f5f2ec'
+  banner_dim: '#9a958a'
+  banner_border: '#35312b'
+  ui_border: '#35312b'
+  ui_ok: '#4ade80'
+  ui_warn: '#fbbf24'
+  ui_error: '#f87171'
+  prompt: '#f5f2ec'
+  status_bar_bg: '#1a1814'
+  status_bar_text: '#f5f2ec'
+  session_border: '#35312b'
+  ui_tool: '#9cc8ea'
+  completion_menu_bg: '#1a1814'

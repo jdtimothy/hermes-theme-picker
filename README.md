@@ -1,22 +1,29 @@
 # Hermes Theme Picker
 
 A portable visual theme picker for the **Hermes Desktop app**. Browse and apply
-Hermes skins with one click from a full-page gallery — no terminal commands
-needed to switch themes, and no dependency on the gateway machine's filesystem.
+Hermes skins with one click from a full-page gallery, repaint the current
+Desktop instantly, and synchronize the selected palette through the connected
+gateway to every Desktop and CLI.
 
 ![Theme Picker](docs/hermes-theme-picker.png)
 
 ## Features
 
-- **Full-page picker** at `/theme-picker` — a grid of swatch cards showing each
-  skin's real palette, with search and a light/dark filter.
+- **Full-page picker** at `/theme-picker` — a responsive grid of swatch cards
+  showing each scene's real palette, with search and a light/dark mode switch.
+- **Dynamic scenes first** — all 50 matched light/dark pairs plus Hermes'
+  dual-mode defaults are grouped above dark-only and light-only scenes.
 - **Connection-independent catalog** — the picker carries its own theme data,
   so the same bundled skins are available whether Desktop is connected to a
   local gateway, a remote gateway, or temporarily offline.
 - **Cross-device persistence** — install the plugin on any desktop device and
   its custom themes remain available in Settings → Appearance after restart;
   they do not depend on a skin folder existing on the connected gateway host.
-- **One-click apply** — the desktop repaints instantly, and the choice persists.
+- **One-click apply** — the desktop repaints in place without leaving the
+  picker, preserves the scene and mode choice per profile, then broadcasts the
+  concrete light or dark palette through the connected gateway.
+- **Gateway-wide synchronization** — the selected variant is sent with
+  `config.set { key: "skin" }`, so all connected Desktops and CLIs update.
 - **Statusbar chip** — shows your current theme in the bottom bar; click it to
   open the picker.
 - **Settings → Appearance integration** — every bundled skin also appears in
@@ -24,23 +31,25 @@ needed to switch themes, and no dependency on the gateway machine's filesystem.
   without a gateway connection).
 - **Live discovery** — apply a skin from anywhere (CLI, another surface) and it
   appears in the picker automatically.
-- **76 bundled skins** (see [Third-Party Notices](THIRD_PARTY_NOTICES.md) for
-  credits), plus every Hermes built-in theme.
+- **140 bundled skins** (see [Third-Party Notices](THIRD_PARTY_NOTICES.md) for
+  credits), including all 100 themes from CliffWade's updated pack, plus every
+  Hermes built-in theme.
 
-## Why themes work across connections and devices
+## Hybrid local and gateway application
 
-The picker is deliberately a self-contained Desktop plugin: its bundled skin
-catalog is embedded in `plugin.js`, then registered locally with Hermes Desktop.
-That means a Windows Desktop app connected to a Linux gateway has the same
-picker catalog as a local Desktop app, even though the two machines do not share
-a filesystem. The catalog is also saved into the Desktop's local theme store at
-plugin load, so a selected custom theme can be resolved before plugins load on
-the next app start.
+The picker applies each selection in two coordinated steps:
 
-This is different from the gateway's active skin: the gateway can still send a
-`skin.changed` event for a newly activated Linux skin, allowing it to appear
-live for the current session. To make a new skin part of the permanent picker
-catalog on another device, regenerate and install that device's `plugin.js`.
+1. It repaints the current Desktop immediately from the palette embedded in
+   `plugin.js`, without navigating away from the picker.
+2. It sends the concrete light or dark skin name to the connected gateway. The
+   gateway broadcasts `skin.changed`, repainting every connected Desktop and
+   CLI with the same palette.
+
+The embedded catalog remains a local fallback and supplies Desktop's richer
+theme tokens. For gateway synchronization, install `skins/` plus the 114
+mode-locked Dynamic Scene variants in `gateway-skins/` on the gateway host.
+Dedicated aliases prevent Desktop's stale internal mode from briefly painting
+the opposite palette while a gateway change propagates.
 
 ### Set a theme on the active gateway
 
@@ -75,9 +84,9 @@ a restart.
 - **Python 3.8+** with `pyyaml` — only needed for `regenerate.py` when you want
   to add your own skins; not needed to use the picker. On Windows, install it
   for the Python launcher with `py -m pip install --user PyYAML`.
-- A Hermes **gateway** for one-click apply (the desktop's normal backend). If
-  the gateway is unreachable, skins can still be switched from Settings →
-  Appearance.
+- A Hermes **gateway is required for cross-device synchronization**. If it is
+  unavailable, the current Desktop still repaints and persists locally, and the
+  picker displays a gateway synchronization warning.
 
 ## Installation
 
@@ -156,9 +165,21 @@ cp plugin/plugin.js "$hermes_home/desktop-plugins/theme-picker/plugin.js"
 
 ### Finish setup
 
-1. In Hermes Desktop, open the Command Palette and run **Reload desktop
+1. On the machine running the connected gateway, install the bundled and
+   canonical transport skins:
+
+   ```bash
+   ./install/install-gateway-skins.sh
+   ```
+
+   The script honors `$HERMES_HOME` and otherwise installs into
+   `~/.hermes/skins/`. It does not require a Desktop or gateway restart. It
+   refuses to overwrite a same-named modified skin; review and back up any
+   reported collision before deliberately rerunning with `--force`. Destination
+   symlinks are always refused, including in force mode.
+2. In Hermes Desktop, open the Command Palette and run **Reload desktop
    plugins**. Restarting the app also works.
-2. Click the theme name in the bottom statusbar, or open the Command Palette
+3. Click the theme name in the bottom statusbar, or open the Command Palette
    and run **Open Theme Picker**.
 
 That's it. Click any card to switch themes instantly.
@@ -254,7 +275,7 @@ directory, then reload plugins or restart the app. Your skins are untouched.
 ├── plugin/
 │   ├── plugin.js            ← the deliverable: copy into the desktop app
 │   └── plugin.template.js   ← UI source (has __SKINS_DATA__ placeholder)
-├── skins/                   ← 76 bundled skins (MIT, see notices)
+├── skins/                   ← 140 bundled skins (MIT, see notices)
 ├── scripts/
 │   └── regenerate.py        ← rebuild plugin.js from skins + template
 ├── install/
@@ -273,8 +294,12 @@ This project bundles skin palettes from two open-source packs. The picker code
 itself is an original implementation — all credit for the **skins** goes to
 their authors:
 
-- **BChop's Hermes Skins Pack** — 50 skins ([GitHub](https://github.com/bchop-studio/hermes-skins-pack))
-- **CliffWade's Hermes Desktop Theme Pack** — 24 skins ([GitHub](https://github.com/CliffWade/hermes-desktop-theme-pack)), whose theme-switcher concept also inspired this project
+- **BChop's Hermes Skins Pack** — 50 original theme designs; 40 remain as
+  exclusive files and 10 are represented by CliffWade's updated ports
+  ([GitHub](https://github.com/bchop-studio/hermes-skins-pack))
+- **CliffWade's Hermes Desktop Theme Pack** — all 100 skins from v1.1.0
+  ([GitHub](https://github.com/CliffWade/hermes-desktop-theme-pack)), whose
+  theme-switcher concept also inspired this project
 
 Both are MIT licensed; full license texts are in
 [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md).

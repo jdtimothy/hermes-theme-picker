@@ -1,0 +1,21 @@
+name: theme-picker-vibrant-synthwave-light
+description: Theme Picker transport for Vibrant Synthwave (light)
+colors:
+  background: '#fdf2f9'
+  ui_accent: '#b23a7d'
+  banner_accent: '#b23a7d'
+  banner_title: '#141414'
+  banner_text: '#141414'
+  ui_text: '#141414'
+  banner_dim: '#7d5a72'
+  banner_border: '#e8cadd'
+  ui_border: '#e8cadd'
+  ui_ok: '#3fbd6d'
+  ui_warn: '#bc8f1b'
+  ui_error: '#d36060'
+  prompt: '#141414'
+  status_bar_bg: '#f3e8ef'
+  status_bar_text: '#141414'
+  session_border: '#e8cadd'
+  ui_tool: '#8f2c63'
+  completion_menu_bg: '#f3e8ef'
