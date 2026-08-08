@@ -3,6 +3,22 @@
 Notable changes to Hermes Theme Picker are documented here. This project uses
 [Semantic Versioning](https://semver.org/): `MAJOR.MINOR.PATCH`.
 
+## [1.5.1] - 2026-08-08
+
+### Product-focused documentation
+
+- Replaces the technical introduction with a concise product overview centered
+  on Dynamic Themes, coordinated Light and Dark modes, and gateway-wide updates.
+- Condenses installation, synchronization, customization, and maintenance
+  guidance without removing the platform-specific setup details.
+- Adds an updated Theme Picker screenshot showing the expanded Dynamic Scenes
+  gallery and mode control.
+- Clarifies the relationship between 104 scenes, 57 Dynamic Themes, and 140
+  bundled skin palettes.
+
+This patch updates documentation and presentation only; runtime behavior is
+unchanged from v1.5.0.
+
 ## [1.5.0] - 2026-08-08
 
 ### Dynamic Scenes — the main event
@@ -64,4 +80,5 @@ theme absent from the embedded catalog, recovery may fall back to the default
 catalog appearance. Embedded scenes and newer in-session selections recover
 correctly.
 
+[1.5.1]: https://github.com/jdtimothy/hermes-theme-picker/releases/tag/v1.5.1
 [1.5.0]: https://github.com/jdtimothy/hermes-theme-picker/releases/tag/v1.5.0

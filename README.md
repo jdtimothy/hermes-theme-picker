@@ -1,5 +1,7 @@
 # Hermes Theme Picker
 
+**Current version: v1.5.1** · [See what changed](CHANGELOG.md)
+
 Give Hermes a look that feels like yours. **Hermes Theme Picker** turns the
 entire app into a gallery of beautiful, one-click themes, led by Dynamic Themes
 that include both light and dark modes. Pick a style and watch it appear
