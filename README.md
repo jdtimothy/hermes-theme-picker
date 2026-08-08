@@ -1,5 +1,7 @@
 # Hermes Theme Picker
 
+**Current version: v1.5.0** · [See what changed](CHANGELOG.md)
+
 A portable visual theme picker for the **Hermes Desktop app**. Browse and apply
 Hermes skins with one click from a full-page gallery, repaint the current
 Desktop instantly, and synchronize the selected palette through the connected
