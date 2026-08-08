@@ -10,8 +10,14 @@ under the terms of their MIT licenses, reproduced below.
 
 | Source | Skins included | License |
 |---|---|---|
-| [BChop's Hermes Skins Pack](https://github.com/bchop-studio/hermes-skins-pack) | 50 skins (alabaster, amber-terminal, … white-flash) | MIT |
-| [CliffWade's Hermes Desktop Theme Pack](https://github.com/CliffWade/hermes-desktop-theme-pack) | 24 skins (dark-aubergine, light-cloud, … vibrant-synthwave) | MIT |
+| [BChop's Hermes Skins Pack](https://github.com/bchop-studio/hermes-skins-pack) | 50 original designs; 40 exclusive files plus 10 designs updated in CliffWade's pack | MIT |
+| [CliffWade's Hermes Desktop Theme Pack](https://github.com/CliffWade/hermes-desktop-theme-pack) | 100 skins from v1.1.0 | MIT |
+
+The two sources overlap on 10 theme names, so the repository contains 140
+unique YAML files rather than 150. For those overlapping names, this project
+ships the current files from CliffWade's v1.1.0 pack.
+Their byte identity is enforced by `scripts/cliffwade-v1.1.0-sha256.json` and
+the generator test suite.
 
 The Hermes Desktop Theme Pack also served as the initial inspiration for this
 project's theme-switcher concept; no code from it is included.

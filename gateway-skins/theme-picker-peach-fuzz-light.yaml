@@ -1,0 +1,21 @@
+name: theme-picker-peach-fuzz-light
+description: Theme Picker transport for Peach Fuzz (light)
+colors:
+  background: '#fdf1ea'
+  ui_accent: '#b84c24'
+  banner_accent: '#b84c24'
+  banner_title: '#4a2418'
+  banner_text: '#4a2418'
+  ui_text: '#4a2418'
+  banner_dim: '#8a5f4e'
+  banner_border: '#e8cdbd'
+  ui_border: '#e8cdbd'
+  ui_ok: '#3f7d4e'
+  ui_warn: '#a87a1f'
+  ui_error: '#b23a3a'
+  prompt: '#4a2418'
+  status_bar_bg: '#f7e5d8'
+  status_bar_text: '#4a2418'
+  session_border: '#e8cdbd'
+  ui_tool: '#a84a2a'
+  completion_menu_bg: '#ffffff'

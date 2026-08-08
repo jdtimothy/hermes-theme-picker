@@ -1,0 +1,21 @@
+name: theme-picker-dark-solarized-light
+description: Theme Picker transport for Solarized (light)
+colors:
+  background: '#fdf6e3'
+  ui_accent: '#2075b0'
+  banner_accent: '#2075b0'
+  banner_title: '#4d6167'
+  banner_text: '#4d6167'
+  ui_text: '#4d6167'
+  banner_dim: '#647072'
+  banner_border: '#eee8d5'
+  ui_border: '#eee8d5'
+  ui_ok: '#4f6e00'
+  ui_warn: '#6e5800'
+  ui_error: '#9f3429'
+  prompt: '#4d6167'
+  status_bar_bg: '#f3ecda'
+  status_bar_text: '#4d6167'
+  session_border: '#eee8d5'
+  ui_tool: '#1a5e8a'
+  completion_menu_bg: '#f3ecda'

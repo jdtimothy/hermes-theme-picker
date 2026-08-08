@@ -1,0 +1,21 @@
+name: theme-picker-retro-amber-light
+description: Theme Picker transport for Retro Amber (light)
+colors:
+  background: '#faf5e8'
+  ui_accent: '#8a5f0c'
+  banner_accent: '#8a5f0c'
+  banner_title: '#4a3a1e'
+  banner_text: '#4a3a1e'
+  ui_text: '#4a3a1e'
+  banner_dim: '#7a6a4a'
+  banner_border: '#ddd0b4'
+  ui_border: '#ddd0b4'
+  ui_ok: '#3f7d4e'
+  ui_warn: '#a87a1f'
+  ui_error: '#b23a3a'
+  prompt: '#4a3a1e'
+  status_bar_bg: '#f0e8d2'
+  status_bar_text: '#4a3a1e'
+  session_border: '#ddd0b4'
+  ui_tool: '#7a5a10'
+  completion_menu_bg: '#ffffff'

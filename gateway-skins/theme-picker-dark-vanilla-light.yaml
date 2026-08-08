@@ -1,0 +1,21 @@
+name: theme-picker-dark-vanilla-light
+description: Theme Picker transport for Vanilla (light)
+colors:
+  background: '#faf5ea'
+  ui_accent: '#8a6a2f'
+  banner_accent: '#8a6a2f'
+  banner_title: '#3c3323'
+  banner_text: '#3c3323'
+  ui_text: '#3c3323'
+  banner_dim: '#7a6f58'
+  banner_border: '#e3d9c2'
+  ui_border: '#e3d9c2'
+  ui_ok: '#3f7d4e'
+  ui_warn: '#a87a1f'
+  ui_error: '#b23a3a'
+  prompt: '#3c3323'
+  status_bar_bg: '#f0e8d2'
+  status_bar_text: '#3c3323'
+  session_border: '#e3d9c2'
+  ui_tool: '#785e2a'
+  completion_menu_bg: '#ffffff'

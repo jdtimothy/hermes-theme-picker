@@ -1,0 +1,21 @@
+name: theme-picker-vibrant-sunset-dark
+description: Theme Picker transport for Vibrant Sunset (dark)
+colors:
+  background: '#1e0f1f'
+  ui_accent: '#ffb37d'
+  banner_accent: '#ffb37d'
+  banner_title: '#ffe9e0'
+  banner_text: '#ffe9e0'
+  ui_text: '#ffe9e0'
+  banner_dim: '#c08a8a'
+  banner_border: '#43283a'
+  ui_border: '#43283a'
+  ui_ok: '#4ade80'
+  ui_warn: '#fbbf24'
+  ui_error: '#f87171'
+  prompt: '#ffe9e0'
+  status_bar_bg: '#1b0e1c'
+  status_bar_text: '#ffe9e0'
+  session_border: '#43283a'
+  ui_tool: '#ff6b35'
+  completion_menu_bg: '#2c1c2b'

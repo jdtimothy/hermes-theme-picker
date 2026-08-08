@@ -1,0 +1,21 @@
+name: theme-picker-nature-nordic-light
+description: Theme Picker transport for Nature Nordic (light)
+colors:
+  background: '#eef4f8'
+  ui_accent: '#2f6f9f'
+  banner_accent: '#2f6f9f'
+  banner_title: '#22303b'
+  banner_text: '#22303b'
+  ui_text: '#22303b'
+  banner_dim: '#5b6f80'
+  banner_border: '#d3e0ea'
+  ui_border: '#d3e0ea'
+  ui_ok: '#2f8e52'
+  ui_warn: '#a17a17'
+  ui_error: '#c65a5a'
+  prompt: '#22303b'
+  status_bar_bg: '#eff5f9'
+  status_bar_text: '#22303b'
+  session_border: '#d3e0ea'
+  ui_tool: '#2f6f9f'
+  completion_menu_bg: '#e2e8ed'

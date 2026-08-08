@@ -48,6 +48,61 @@ KEEP_KEYS = {
     "completion_menu_bg", "prompt", "shell_dollar",
 }
 
+# Canonical light/dark matches from CliffWade/hermes-desktop-theme-pack v1.1.0.
+# Each pair becomes one Desktop theme whose light/dark toggle swaps real palettes.
+THEME_PAIRS = [
+    ("dark-aubergine", "light-lavender"),
+    ("dark-ayu", "light-ayu"),
+    ("dark-bone", "minimal-bone"),
+    ("dark-catppuccin", "light-catppuccin"),
+    ("dark-charcoal", "light-cloud"),
+    ("dark-cozy-paper", "light-cozy-paper"),
+    ("dark-crimson", "light-rose"),
+    ("dark-dracula", "light-dracula"),
+    ("dark-everforest", "light-everforest"),
+    ("dark-github", "light-github"),
+    ("dark-gruvbox", "light-gruvbox"),
+    ("dark-kanagawa", "light-kanagawa"),
+    ("dark-lcars", "light-lcars"),
+    ("dark-lemon", "light-lemon"),
+    ("dark-mac", "retro-mac"),
+    ("dark-material", "light-material"),
+    ("dark-navy", "light-sky"),
+    ("dark-nord", "light-nord"),
+    ("dark-obsidian", "light-porcelain"),
+    ("dark-one", "light-one"),
+    ("dark-plum", "light-grape"),
+    ("dark-rosepine", "light-rosepine"),
+    ("dark-sage", "light-sage"),
+    ("dark-solarized", "light-solarized"),
+    ("dark-tokyo-night", "light-tokyo-day"),
+    ("dark-vanilla", "light-vanilla"),
+    ("dark-vscode", "light-vscode"),
+    ("minimal-graphite", "minimal-pearl"),
+    ("nature-autumn", "light-melon"),
+    ("nature-desert", "light-sand"),
+    ("nature-forest", "light-fern"),
+    ("nature-nordic", "light-frost"),
+    ("nature-ocean", "light-tide"),
+    ("newsprint-noir", "light-paper"),
+    ("peach-fuzz", "light-peach"),
+    ("redwood", "light-cream"),
+    ("retro-amber", "light-honey"),
+    ("retro-blue", "light-denim"),
+    ("retro-terminal", "light-mint"),
+    ("shadow-thief", "light-lilac"),
+    ("slate-mist", "light-mist"),
+    ("stained-glass", "light-stained-glass"),
+    ("steel-thread", "light-ash"),
+    ("vaporwave-mall", "light-aqua"),
+    ("vibrant-neon", "light-neon"),
+    ("vibrant-pacific", "light-pacific"),
+    ("vibrant-sunset", "light-blush"),
+    ("vibrant-synthwave", "light-synthwave"),
+    ("void-sunset", "light-sunset"),
+    ("warm-ash", "light-oat"),
+]
+
 HEX_RE = re.compile(r"^#(?:[0-9a-fA-F]{6}|[0-9a-fA-F]{3})$")
 
 
@@ -111,34 +166,222 @@ def _parse_skin_file(path: Path) -> dict | None:
     }
 
 
-def _backend_builtins() -> list[dict]:
-    """Pull the backend's built-in skins so the picker can also show/apply them."""
-    builtins = []
-    try:
-        from hermes_cli.skin_engine import list_skins, load_skin
-    except Exception:
-        return builtins
-    for s in list_skins():
-        if s.get("source") != "builtin":
+def _preview(background: str, text: str, accent: str, border: str, tool: str | None = None) -> dict:
+    """Build the compact skin-shaped palette consumed by the picker preview."""
+    return {
+        "background": background,
+        "ui_text": text,
+        "banner_text": text,
+        "ui_accent": accent,
+        "banner_accent": accent,
+        "ui_tool": tool or accent,
+        "ui_border": border,
+        "banner_border": border,
+    }
+
+
+def _dynamic_scene(
+    name: str,
+    label: str,
+    description: str,
+    light: dict,
+    dark: dict,
+    *,
+    light_name: str | None = None,
+    dark_name: str | None = None,
+    source: str = "builtin-desktop",
+) -> dict:
+    return {
+        "name": name,
+        "label": label,
+        "description": description,
+        "category": "Built-in" if source == "builtin-desktop" else "Dynamic",
+        "modeSupport": "dynamic",
+        "source": source,
+        "colors": light,
+        "lightColors": light,
+        "darkColors": dark,
+        "lightName": light_name or name,
+        "darkName": dark_name or name,
+        # Dynamic variants always travel under dedicated aliases. Backend skins
+        # are single-mode Desktop themes; a unique alias prevents a loaded
+        # combined user theme of the same name from winning resolution and
+        # briefly painting its opposite palette through stale React mode state.
+        "gatewayLightName": f"theme-picker-{name}-light",
+        "gatewayDarkName": f"theme-picker-{name}-dark",
+    }
+
+
+def _desktop_builtin_scenes() -> list[dict]:
+    """The canonical Desktop scenes, with swatches matching Hermes presets."""
+    scenes = [
+        _dynamic_scene(
+            "nous", "Nous", "Glass neutrals with Nous blue accents",
+            _preview("#F8FAFF", "#17171A", "#0053FD", "#C7D7FA"),
+            _preview("#0D2F86", "#FFE6CB", "#FFE6CB", "#3158AD", "#0053FD"),
+            dark_name="default",
+        ),
+        _dynamic_scene(
+            "midnight", "Midnight", "Deep blue-violet with cool accents",
+            _preview("#FFFFFF", "#161616", "#8B80E8", "#DEDDF5"),
+            _preview("#08081C", "#DDD6FF", "#8B80E8", "#1E1E52"),
+        ),
+        _dynamic_scene(
+            "ember", "Ember", "Warm crimson and bronze — forge vibes",
+            _preview("#FFFFFF", "#161616", "#D97316", "#F1D9C4"),
+            _preview("#160800", "#FFD8B0", "#D97316", "#3A1C08"),
+        ),
+        _dynamic_scene(
+            "mono", "Mono", "Clean grayscale — minimal and focused",
+            _preview("#FFFFFF", "#161616", "#707070", "#DEDEDE"),
+            _preview("#0E0E0E", "#EAEAEA", "#9A9A9A", "#2A2A2A"),
+        ),
+        _dynamic_scene(
+            "cyberpunk", "Cyberpunk", "Neon green on black — matrix terminal",
+            _preview("#FFFFFF", "#161616", "#008F28", "#C9E8D2"),
+            _preview("#000A00", "#00FF41", "#00FF41", "#003000"),
+        ),
+        _dynamic_scene(
+            "rose", "Rose", "Soft pink and warm ivory — easy on the eyes",
+            _preview("#FFF8FB", "#24171D", "#B64F78", "#E8CAD6"),
+            _preview("#1A0F15", "#FFD4E1", "#F9A8D4", "#54283B"),
+        ),
+        _dynamic_scene(
+            "shadow-thief", "Shadow Thief", "Rogue's night — matte black, muted plum, and silver-steel with a glint of cyan",
+            _preview("#F7F1FA", "#3A2645", "#8B5CA8", "#D8C8E0", "#7A4F94"),
+            _preview("#101014", "#B0B0C0", "#50A8A8", "#4A4060"),
+            light_name="light-lilac",
+            dark_name="shadow-thief",
+        ),
+        _dynamic_scene(
+            "hermes-teal", "Hermes Teal", "Classic teal — the canonical Hermes dashboard look",
+            _preview("#F4FCFC", "#132B2B", "#087F7A", "#B9DBD8"),
+            _preview("#041C1C", "#FFE6CB", "#33C4BA", "#205654"),
+        ),
+    ]
+    return scenes
+
+
+def _mode_support(name: str, is_dark: bool) -> str:
+    if name in {"daylight", "warm-lightmode"}:
+        return "light"
+    return "dark" if is_dark else "light"
+
+
+def _single_scene(skin: dict) -> dict:
+    mode = _mode_support(skin["name"], skin.get("isDark", True))
+    colors = skin.get("colors", {})
+    return {
+        **skin,
+        "label": skin.get("label") or skin["name"].replace("-", " ").title(),
+        "modeSupport": mode,
+        "lightColors": colors if mode == "light" else None,
+        "darkColors": colors if mode == "dark" else None,
+        "lightName": skin["name"] if mode == "light" else None,
+        "darkName": skin["name"] if mode == "dark" else None,
+    }
+
+
+def _build_catalog(
+    user_skins: list[dict],
+    backend_builtins: list[dict],
+    *,
+    pairs: list[tuple[str, str]] | None = None,
+    desktop_builtins: list[dict] | None = None,
+) -> list[dict]:
+    """Collapse matched palettes into scenes, then retain every unpaired skin."""
+    pair_list = THEME_PAIRS if pairs is None else pairs
+    desktop = _desktop_builtin_scenes() if desktop_builtins is None else desktop_builtins
+    by_name = {skin["name"]: skin for skin in user_skins}
+    consumed = set()
+    scenes = []
+    for builtin in desktop:
+        scene = dict(builtin)
+        light = by_name.get(scene.get("lightName"))
+        dark = by_name.get(scene.get("darkName"))
+        # Shadow Thief is both a canonical Desktop scene and part of the
+        # vendored pack. Preserve the complete source palettes so migration can
+        # recognize the exact legacy single-palette cache without broad rules.
+        if light:
+            scene["colors"] = light.get("colors", {})
+            scene["lightColors"] = light.get("colors", {})
+        if dark:
+            scene["darkColors"] = dark.get("colors", {})
+        scenes.append(scene)
+
+    reserved = {scene["name"] for scene in desktop}
+    for scene in desktop:
+        reserved.update(name for name in (scene.get("lightName"), scene.get("darkName")) if name)
+
+    for dark_name, light_name in pair_list:
+        if dark_name in reserved or light_name in reserved:
+            consumed.update({dark_name, light_name})
             continue
-        name = s["name"]
-        try:
-            sk = load_skin(name)
-            colors = {
-                k: v for k, v in (sk.colors or {}).items()
-                if isinstance(v, str) and k in KEEP_KEYS
-            }
-        except Exception:
-            colors = {}
-        builtins.append({
-            "name": name,
-            "description": s.get("description", "") or f"Hermes built-in: {name}",
-            "category": "Built-in",
-            "isDark": True,
-            "source": "builtin",
-            "colors": colors,
-        })
+        dark = by_name.get(dark_name)
+        light = by_name.get(light_name)
+        if not dark or not light:
+            continue
+        consumed.update({dark_name, light_name})
+        scenes.append(_dynamic_scene(
+            dark_name,
+            dark_name.removeprefix("dark-").replace("-", " ").title(),
+            dark.get("description", "") or light.get("description", ""),
+            light.get("colors", {}),
+            dark.get("colors", {}),
+            light_name=light_name,
+            dark_name=dark_name,
+            source="user",
+        ))
+
+    for skin in user_skins:
+        if skin["name"] not in consumed and skin["name"] not in reserved:
+            scenes.append(_single_scene(skin))
+
+    desktop_names = {scene["name"] for scene in desktop}
+    for skin in backend_builtins:
+        # Backend `default` is the retired gold skin; Desktop's default is Nous.
+        if skin["name"] != "default" and skin["name"] not in desktop_names:
+            scenes.append(_single_scene(skin))
+
+    return scenes
+
+
+def _backend_builtins() -> list[dict]:
+    """Load the pinned backend built-ins used by deterministic generation."""
+    source = Path(__file__).resolve().with_name("backend-builtins.json")
+    try:
+        builtins = json.loads(source.read_text(encoding="utf-8"))
+    except Exception as exc:
+        raise RuntimeError(f"could not load pinned backend built-ins from {source}: {exc}") from exc
+    expected = ["default", "ares", "mono", "slate", "daylight", "warm-lightmode", "poseidon", "sisyphus", "charizard"]
+    if not isinstance(builtins, list) or [skin.get("name") for skin in builtins] != expected:
+        raise RuntimeError(f"pinned backend built-ins in {source} do not match the expected catalog")
     return builtins
+
+
+def _write_gateway_transport_skins(catalog: list[dict], destination: Path) -> int:
+    """Generate one mode-locked gateway skin for every dynamic variant."""
+    assert yaml is not None
+    destination.mkdir(parents=True, exist_ok=True)
+    expected = set()
+    for scene in catalog:
+        if scene.get("modeSupport") != "dynamic":
+            continue
+        for mode in ("light", "dark"):
+            name = scene[f"gateway{mode.title()}Name"]
+            expected.add(f"{name}.yaml")
+            payload = {
+                "name": name,
+                "description": f"Theme Picker transport for {scene.get('label', scene['name'])} ({mode})",
+                "colors": scene[f"{mode}Colors"],
+            }
+            text = yaml.safe_dump(payload, sort_keys=False, allow_unicode=True)
+            (destination / f"{name}.yaml").write_text(text, encoding="utf-8")
+
+    for path in destination.glob("*.yaml"):
+        if path.name not in expected:
+            path.unlink()
+    return len(expected)
 
 
 def main() -> int:
@@ -163,19 +406,30 @@ def main() -> int:
 
     user_skins = []
     for p in sorted(skins_dir.glob("*.yaml")):
+        if not p.is_file() or p.is_symlink():
+            continue
         parsed = _parse_skin_file(p)
-        if parsed:
+        if parsed and parsed.get("colors"):
             user_skins.append(parsed)
 
-    builtins = _backend_builtins()
-    names = {s["name"] for s in user_skins}
-    all_skins = user_skins + [b for b in builtins if b["name"] not in names]
-    if not all_skins:
-        print(f"ERROR: no skins found in {skins_dir}; refusing to replace {out_path}.", file=sys.stderr)
+    # Backend built-ins are supplemental. Never let them turn an empty,
+    # malformed, or non-regular supplied bundle into a destructive partial
+    # regeneration: transport generation also prunes files not in the catalog.
+    if not user_skins:
+        print(f"ERROR: no valid bundled skins found in {skins_dir}; refusing to replace {out_path}.", file=sys.stderr)
         return 1
+
+    try:
+        builtins = _backend_builtins()
+    except RuntimeError as exc:
+        print(f"ERROR: {exc}; refusing to replace {out_path}.", file=sys.stderr)
+        return 1
+    catalog = _build_catalog(user_skins, builtins)
+    repo_gateway_skins = script_dir.parent / "gateway-skins"
+    transport_count = _write_gateway_transport_skins(catalog, repo_gateway_skins)
     # sort_keys=True keeps output byte-stable across runs (matches the shipped
     # plugin.js), so a rebuild with unchanged skins produces an identical file.
-    data = json.dumps(all_skins, ensure_ascii=False, separators=(",", ":"), sort_keys=True)
+    data = json.dumps(catalog, ensure_ascii=False, separators=(",", ":"), sort_keys=True)
 
     # Template lives in the project's plugin/ dir (repo layout) or next to the
     # plugin folder root (in-place layout: ../plugin.template.js).
@@ -193,8 +447,9 @@ def main() -> int:
     out_path.parent.mkdir(parents=True, exist_ok=True)
     out_path.write_text(plugin, encoding="utf-8")
 
-    print(f"Rebuilt {out_path} with {len(all_skins)} skins "
-          f"({len(user_skins)} user + {len(builtins)} built-in).")
+    print(f"Rebuilt {out_path} with {len(catalog)} scenes from "
+          f"{len(user_skins)} bundled skins + {len(builtins)} backend built-ins "
+          f"and {transport_count} gateway transports.")
     print("Next: copy plugin.js to the desktop machine and run "
           "'Reload desktop plugins' (Ctrl+K).")
     return 0

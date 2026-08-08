@@ -1,0 +1,21 @@
+name: theme-picker-redwood-dark
+description: Theme Picker transport for Redwood (dark)
+colors:
+  background: '#1e1814'
+  ui_accent: '#a28868'
+  banner_accent: '#8a7050'
+  banner_title: '#a0c080'
+  banner_text: '#d8d0c0'
+  ui_text: '#d8d0c0'
+  banner_dim: '#928070'
+  banner_border: '#6b8a5a'
+  ui_border: '#6b8a5a'
+  ui_ok: '#90b870'
+  ui_warn: '#c8a050'
+  ui_error: '#b87050'
+  prompt: '#d8d0c0'
+  status_bar_bg: '#14100c'
+  status_bar_text: '#a09880'
+  session_border: '#4a3828'
+  ui_tool: '#80a868'
+  completion_menu_bg: '#1e1814'

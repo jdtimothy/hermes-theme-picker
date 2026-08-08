@@ -1,0 +1,21 @@
+name: theme-picker-void-sunset-light
+description: Theme Picker transport for Void Sunset (light)
+colors:
+  background: '#fdf4ee'
+  ui_accent: '#b04f2c'
+  banner_accent: '#b04f2c'
+  banner_title: '#141414'
+  banner_text: '#141414'
+  ui_text: '#141414'
+  banner_dim: '#7d5a5c'
+  banner_border: '#e6d2c8'
+  ui_border: '#e6d2c8'
+  ui_ok: '#3fbd6d'
+  ui_warn: '#bc8f1b'
+  ui_error: '#d36060'
+  prompt: '#141414'
+  status_bar_bg: '#f3eae4'
+  status_bar_text: '#141414'
+  session_border: '#e6d2c8'
+  ui_tool: '#8c3d21'
+  completion_menu_bg: '#f3eae4'

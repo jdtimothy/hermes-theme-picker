@@ -1,0 +1,21 @@
+name: theme-picker-minimal-graphite-dark
+description: Theme Picker transport for Minimal Graphite (dark)
+colors:
+  background: '#17181a'
+  ui_accent: '#c3cad2'
+  banner_accent: '#c3cad2'
+  banner_title: '#e8eaec'
+  banner_text: '#e8eaec'
+  ui_text: '#e8eaec'
+  banner_dim: '#8f959c'
+  banner_border: '#26272b'
+  ui_border: '#26272b'
+  ui_ok: '#4ade80'
+  ui_warn: '#fbbf24'
+  ui_error: '#f87171'
+  prompt: '#e8eaec'
+  status_bar_bg: '#151617'
+  status_bar_text: '#e8eaec'
+  session_border: '#26272b'
+  ui_tool: '#9aa3ad'
+  completion_menu_bg: '#242527'

@@ -1,0 +1,21 @@
+name: theme-picker-dark-lemon-dark
+description: Theme Picker transport for Lemon (dark)
+colors:
+  background: '#1a1810'
+  ui_accent: '#d4c84a'
+  banner_accent: '#d4c84a'
+  banner_title: '#f5f2ec'
+  banner_text: '#f5f2ec'
+  ui_text: '#f5f2ec'
+  banner_dim: '#9a9460'
+  banner_border: '#33311e'
+  ui_border: '#33311e'
+  ui_ok: '#4ade80'
+  ui_warn: '#fbbf24'
+  ui_error: '#f87171'
+  prompt: '#f5f2ec'
+  status_bar_bg: '#18160f'
+  status_bar_text: '#f5f2ec'
+  session_border: '#33311e'
+  ui_tool: '#e8de6e'
+  completion_menu_bg: '#18160f'

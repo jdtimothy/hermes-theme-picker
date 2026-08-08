@@ -1,0 +1,21 @@
+name: theme-picker-nature-desert-light
+description: Theme Picker transport for Nature Desert (light)
+colors:
+  background: '#f6f1e4'
+  ui_accent: '#667433'
+  banner_accent: '#667433'
+  banner_title: '#2e2a1e'
+  banner_text: '#2e2a1e'
+  ui_text: '#2e2a1e'
+  banner_dim: '#716b54'
+  banner_border: '#e0d8bf'
+  ui_border: '#e0d8bf'
+  ui_ok: '#2f8e52'
+  ui_warn: '#a17a17'
+  ui_error: '#c65a5a'
+  prompt: '#2e2a1e'
+  status_bar_bg: '#f7f2e6'
+  status_bar_text: '#2e2a1e'
+  session_border: '#e0d8bf'
+  ui_tool: '#7a8a3d'
+  completion_menu_bg: '#eae5d8'

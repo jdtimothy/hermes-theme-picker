@@ -1,0 +1,21 @@
+name: theme-picker-slate-mist-light
+description: Theme Picker transport for Slate Mist (light)
+colors:
+  background: '#eef2f6'
+  ui_accent: '#4a6a85'
+  banner_accent: '#4a6a85'
+  banner_title: '#24313d'
+  banner_text: '#24313d'
+  ui_text: '#24313d'
+  banner_dim: '#5a6a7a'
+  banner_border: '#ccd6de'
+  ui_border: '#ccd6de'
+  ui_ok: '#3f7d4e'
+  ui_warn: '#a87a1f'
+  ui_error: '#b23a3a'
+  prompt: '#24313d'
+  status_bar_bg: '#dbe2e8'
+  status_bar_text: '#24313d'
+  session_border: '#ccd6de'
+  ui_tool: '#3e5a72'
+  completion_menu_bg: '#ffffff'

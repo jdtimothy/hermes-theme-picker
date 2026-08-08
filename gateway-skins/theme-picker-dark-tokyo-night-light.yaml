@@ -1,0 +1,21 @@
+name: theme-picker-dark-tokyo-night-light
+description: Theme Picker transport for Tokyo Night (light)
+colors:
+  background: '#e1e2e7'
+  ui_accent: '#235fb1'
+  banner_accent: '#235fb1'
+  banner_title: '#343b58'
+  banner_text: '#343b58'
+  ui_text: '#343b58'
+  banner_dim: '#565a6e'
+  banner_border: '#c4c8da'
+  ui_border: '#c4c8da'
+  ui_ok: '#2a6334'
+  ui_warn: '#7b5519'
+  ui_error: '#af3a46'
+  prompt: '#343b58'
+  status_bar_bg: '#d8d9de'
+  status_bar_text: '#343b58'
+  session_border: '#c4c8da'
+  ui_tool: '#1c4f8f'
+  completion_menu_bg: '#d8d9de'

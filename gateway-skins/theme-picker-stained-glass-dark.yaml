@@ -1,0 +1,21 @@
+name: theme-picker-stained-glass-dark
+description: Theme Picker transport for Stained Glass (dark)
+colors:
+  background: '#141420'
+  ui_accent: '#50a0d0'
+  banner_accent: '#50a0d0'
+  banner_title: '#e07050'
+  banner_text: '#d8d0c8'
+  ui_text: '#d8d0c8'
+  banner_dim: '#808090'
+  banner_border: '#c0a050'
+  ui_border: '#c0a050'
+  ui_ok: '#60b870'
+  ui_warn: '#c0a050'
+  ui_error: '#c05050'
+  prompt: '#d8d0c8'
+  status_bar_bg: '#0a0a14'
+  status_bar_text: '#908878'
+  session_border: '#383848'
+  ui_tool: '#50a0d0'
+  completion_menu_bg: '#141420'

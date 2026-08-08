@@ -1,0 +1,11 @@
+name: theme-picker-ember-light
+description: Theme Picker transport for Ember (light)
+colors:
+  background: '#FFFFFF'
+  ui_text: '#161616'
+  banner_text: '#161616'
+  ui_accent: '#D97316'
+  banner_accent: '#D97316'
+  ui_tool: '#D97316'
+  ui_border: '#F1D9C4'
+  banner_border: '#F1D9C4'

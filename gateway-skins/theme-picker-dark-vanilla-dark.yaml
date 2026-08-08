@@ -1,0 +1,21 @@
+name: theme-picker-dark-vanilla-dark
+description: Theme Picker transport for Vanilla (dark)
+colors:
+  background: '#1c1711'
+  ui_accent: '#d9a83c'
+  banner_accent: '#d9a83c'
+  banner_title: '#f5f2ec'
+  banner_text: '#f5f2ec'
+  ui_text: '#f5f2ec'
+  banner_dim: '#9a8a6a'
+  banner_border: '#352b1c'
+  ui_border: '#352b1c'
+  ui_ok: '#4ade80'
+  ui_warn: '#fbbf24'
+  ui_error: '#f87171'
+  prompt: '#f5f2ec'
+  status_bar_bg: '#1a1510'
+  status_bar_text: '#f5f2ec'
+  session_border: '#352b1c'
+  ui_tool: '#e8c06a'
+  completion_menu_bg: '#1a1510'

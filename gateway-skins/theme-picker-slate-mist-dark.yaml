@@ -1,0 +1,21 @@
+name: theme-picker-slate-mist-dark
+description: Theme Picker transport for Slate Mist (dark)
+colors:
+  background: '#1c1e22'
+  ui_accent: '#808ca0'
+  banner_accent: '#687488'
+  banner_title: '#a0a8b4'
+  banner_text: '#c0c4cc'
+  ui_text: '#c0c4cc'
+  banner_dim: '#888e98'
+  banner_border: '#444a54'
+  ui_border: '#444a54'
+  ui_ok: '#7a907a'
+  ui_warn: '#908a70'
+  ui_error: '#907a7a'
+  prompt: '#c0c4cc'
+  status_bar_bg: '#121418'
+  status_bar_text: '#808488'
+  session_border: '#343a44'
+  ui_tool: '#687488'
+  completion_menu_bg: '#1c1e22'

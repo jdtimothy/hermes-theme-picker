@@ -1,0 +1,11 @@
+name: theme-picker-mono-light
+description: Theme Picker transport for Mono (light)
+colors:
+  background: '#FFFFFF'
+  ui_text: '#161616'
+  banner_text: '#161616'
+  ui_accent: '#707070'
+  banner_accent: '#707070'
+  ui_tool: '#707070'
+  ui_border: '#DEDEDE'
+  banner_border: '#DEDEDE'

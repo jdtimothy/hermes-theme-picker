@@ -1,0 +1,21 @@
+name: theme-picker-dark-everforest-light
+description: Theme Picker transport for Everforest (light)
+colors:
+  background: '#fdf6e3'
+  ui_accent: '#637242'
+  banner_accent: '#637242'
+  banner_title: '#515d64'
+  banner_text: '#515d64'
+  ui_text: '#515d64'
+  banner_dim: '#6a7268'
+  banner_border: '#eae4d2'
+  ui_border: '#eae4d2'
+  ui_ok: '#536436'
+  ui_warn: '#7d6230'
+  ui_error: '#9e4a39'
+  prompt: '#515d64'
+  status_bar_bg: '#f3ecda'
+  status_bar_text: '#515d64'
+  session_border: '#eae4d2'
+  ui_tool: '#556537'
+  completion_menu_bg: '#f3ecda'

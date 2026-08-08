@@ -1,0 +1,21 @@
+name: theme-picker-nature-forest-light
+description: Theme Picker transport for Nature Forest (light)
+colors:
+  background: '#eff5ec'
+  ui_accent: '#3f7a45'
+  banner_accent: '#3f7a45'
+  banner_title: '#233a26'
+  banner_text: '#233a26'
+  ui_text: '#233a26'
+  banner_dim: '#5f745f'
+  banner_border: '#d0dcc8'
+  ui_border: '#d0dcc8'
+  ui_ok: '#3f7d4e'
+  ui_warn: '#a87a1f'
+  ui_error: '#b23a3a'
+  prompt: '#233a26'
+  status_bar_bg: '#dfe8d8'
+  status_bar_text: '#233a26'
+  session_border: '#d0dcc8'
+  ui_tool: '#356a3a'
+  completion_menu_bg: '#ffffff'

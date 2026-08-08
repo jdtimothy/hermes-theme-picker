@@ -1,0 +1,11 @@
+name: theme-picker-nous-light
+description: Theme Picker transport for Nous (light)
+colors:
+  background: '#F8FAFF'
+  ui_text: '#17171A'
+  banner_text: '#17171A'
+  ui_accent: '#0053FD'
+  banner_accent: '#0053FD'
+  ui_tool: '#0053FD'
+  ui_border: '#C7D7FA'
+  banner_border: '#C7D7FA'

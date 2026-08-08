@@ -1,0 +1,21 @@
+name: theme-picker-nature-nordic-dark
+description: Theme Picker transport for Nature Nordic (dark)
+colors:
+  background: '#121a20'
+  ui_accent: '#b7dbe8'
+  banner_accent: '#b7dbe8'
+  banner_title: '#dfe8ee'
+  banner_text: '#dfe8ee'
+  ui_text: '#dfe8ee'
+  banner_dim: '#8ba0ad'
+  banner_border: '#26343e'
+  ui_border: '#26343e'
+  ui_ok: '#4ade80'
+  ui_warn: '#fbbf24'
+  ui_error: '#f87171'
+  prompt: '#dfe8ee'
+  status_bar_bg: '#10171d'
+  status_bar_text: '#dfe8ee'
+  session_border: '#26343e'
+  ui_tool: '#7fb2c5'
+  completion_menu_bg: '#1e262c'

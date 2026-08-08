@@ -1,0 +1,21 @@
+name: theme-picker-nature-autumn-dark
+description: Theme Picker transport for Nature Autumn (dark)
+colors:
+  background: '#241510'
+  ui_accent: '#e07b39'
+  banner_accent: '#e07b39'
+  banner_title: '#f5e8d8'
+  banner_text: '#f5e8d8'
+  ui_text: '#f5e8d8'
+  banner_dim: '#b89880'
+  banner_border: '#3d2418'
+  ui_border: '#3d2418'
+  ui_ok: '#4ade80'
+  ui_warn: '#fbbf24'
+  ui_error: '#f87171'
+  prompt: '#f5e8d8'
+  status_bar_bg: '#1d110c'
+  status_bar_text: '#f5e8d8'
+  session_border: '#3d2418'
+  ui_tool: '#c25a24'
+  completion_menu_bg: '#2e1c13'

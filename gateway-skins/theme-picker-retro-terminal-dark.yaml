@@ -1,0 +1,21 @@
+name: theme-picker-retro-terminal-dark
+description: Theme Picker transport for Retro Terminal (dark)
+colors:
+  background: '#0a1208'
+  ui_accent: '#7dffa8'
+  banner_accent: '#7dffa8'
+  banner_title: '#c8ffd5'
+  banner_text: '#c8ffd5'
+  ui_text: '#c8ffd5'
+  banner_dim: '#5f8f6a'
+  banner_border: '#17331c'
+  ui_border: '#17331c'
+  ui_ok: '#4ade80'
+  ui_warn: '#fbbf24'
+  ui_error: '#f87171'
+  prompt: '#c8ffd5'
+  status_bar_bg: '#091007'
+  status_bar_text: '#c8ffd5'
+  session_border: '#17331c'
+  ui_tool: '#33ff66'
+  completion_menu_bg: '#152014'

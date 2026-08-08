@@ -1,0 +1,21 @@
+name: theme-picker-warm-ash-light
+description: Theme Picker transport for Warm Ash (light)
+colors:
+  background: '#f4f1ea'
+  ui_accent: '#6e6250'
+  banner_accent: '#6e6250'
+  banner_title: '#332f28'
+  banner_text: '#332f28'
+  ui_text: '#332f28'
+  banner_dim: '#6d675c'
+  banner_border: '#d8d2c2'
+  ui_border: '#d8d2c2'
+  ui_ok: '#3f7d4e'
+  ui_warn: '#a87a1f'
+  ui_error: '#b23a3a'
+  prompt: '#332f28'
+  status_bar_bg: '#e6e0d2'
+  status_bar_text: '#332f28'
+  session_border: '#d8d2c2'
+  ui_tool: '#5e5544'
+  completion_menu_bg: '#ffffff'

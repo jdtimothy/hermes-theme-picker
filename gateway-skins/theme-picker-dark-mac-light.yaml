@@ -1,0 +1,21 @@
+name: theme-picker-dark-mac-light
+description: Theme Picker transport for Mac (light)
+colors:
+  background: '#e8e4da'
+  ui_accent: '#245a8e'
+  banner_accent: '#245a8e'
+  banner_title: '#1f1f24'
+  banner_text: '#1f1f24'
+  ui_text: '#1f1f24'
+  banner_dim: '#656057'
+  banner_border: '#b8b3a8'
+  ui_border: '#b8b3a8'
+  ui_ok: '#3f7d4e'
+  ui_warn: '#a87a1f'
+  ui_error: '#b23a3a'
+  prompt: '#1f1f24'
+  status_bar_bg: '#d8d4c9'
+  status_bar_text: '#1f1f24'
+  session_border: '#b8b3a8'
+  ui_tool: '#2e5f88'
+  completion_menu_bg: '#f4f1e8'

@@ -1,0 +1,11 @@
+name: theme-picker-midnight-dark
+description: Theme Picker transport for Midnight (dark)
+colors:
+  background: '#08081C'
+  ui_text: '#DDD6FF'
+  banner_text: '#DDD6FF'
+  ui_accent: '#8B80E8'
+  banner_accent: '#8B80E8'
+  ui_tool: '#8B80E8'
+  ui_border: '#1E1E52'
+  banner_border: '#1E1E52'

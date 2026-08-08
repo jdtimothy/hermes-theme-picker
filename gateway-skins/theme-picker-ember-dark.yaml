@@ -1,0 +1,11 @@
+name: theme-picker-ember-dark
+description: Theme Picker transport for Ember (dark)
+colors:
+  background: '#160800'
+  ui_text: '#FFD8B0'
+  banner_text: '#FFD8B0'
+  ui_accent: '#D97316'
+  banner_accent: '#D97316'
+  ui_tool: '#D97316'
+  ui_border: '#3A1C08'
+  banner_border: '#3A1C08'

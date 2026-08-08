@@ -1,0 +1,21 @@
+name: theme-picker-dark-crimson-dark
+description: Theme Picker transport for Crimson (dark)
+colors:
+  background: '#200608'
+  ui_accent: '#e8b84a'
+  banner_accent: '#e8b84a'
+  banner_title: '#f5d9d9'
+  banner_text: '#f5d9d9'
+  ui_text: '#f5d9d9'
+  banner_dim: '#c09090'
+  banner_border: '#3d1214'
+  ui_border: '#3d1214'
+  ui_ok: '#4ade80'
+  ui_warn: '#fbbf24'
+  ui_error: '#f87171'
+  prompt: '#f5d9d9'
+  status_bar_bg: '#180406'
+  status_bar_text: '#f5d9d9'
+  session_border: '#3d1214'
+  ui_tool: '#c03030'
+  completion_menu_bg: '#2a0e10'

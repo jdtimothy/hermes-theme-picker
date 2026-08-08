@@ -1,0 +1,21 @@
+name: theme-picker-dark-navy-light
+description: Theme Picker transport for Navy (light)
+colors:
+  background: '#e8f4fd'
+  ui_accent: '#1a6fb5'
+  banner_accent: '#1a6fb5'
+  banner_title: '#16324a'
+  banner_text: '#16324a'
+  ui_text: '#16324a'
+  banner_dim: '#4a6b85'
+  banner_border: '#b8d4e8'
+  ui_border: '#b8d4e8'
+  ui_ok: '#3f7d4e'
+  ui_warn: '#a87a1f'
+  ui_error: '#b23a3a'
+  prompt: '#16324a'
+  status_bar_bg: '#d8ebf7'
+  status_bar_text: '#16324a'
+  session_border: '#b8d4e8'
+  ui_tool: '#1f5f8f'
+  completion_menu_bg: '#ffffff'

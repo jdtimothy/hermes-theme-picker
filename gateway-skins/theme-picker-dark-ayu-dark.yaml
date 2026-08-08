@@ -1,0 +1,21 @@
+name: theme-picker-dark-ayu-dark
+description: Theme Picker transport for Ayu (dark)
+colors:
+  background: '#0b0e14'
+  ui_accent: '#59c2ff'
+  banner_accent: '#59c2ff'
+  banner_title: '#b3b1ad'
+  banner_text: '#b3b1ad'
+  ui_text: '#b3b1ad'
+  banner_dim: '#787b77'
+  banner_border: '#1f2430'
+  ui_border: '#1f2430'
+  ui_ok: '#a6cc70'
+  ui_warn: '#e6b450'
+  ui_error: '#f07178'
+  prompt: '#b3b1ad'
+  status_bar_bg: '#0a0d12'
+  status_bar_text: '#b3b1ad'
+  session_border: '#1f2430'
+  ui_tool: '#8ad6ff'
+  completion_menu_bg: '#0a0d12'

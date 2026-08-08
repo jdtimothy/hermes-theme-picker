@@ -1,0 +1,21 @@
+name: theme-picker-vaporwave-mall-light
+description: Theme Picker transport for Vaporwave Mall (light)
+colors:
+  background: '#e7f7f4'
+  ui_accent: '#0b7171'
+  banner_accent: '#0b7171'
+  banner_title: '#123c3c'
+  banner_text: '#123c3c'
+  ui_text: '#123c3c'
+  banner_dim: '#3f6b6b'
+  banner_border: '#b8ded8'
+  ui_border: '#b8ded8'
+  ui_ok: '#3f7d4e'
+  ui_warn: '#a87a1f'
+  ui_error: '#b23a3a'
+  prompt: '#123c3c'
+  status_bar_bg: '#d4eeea'
+  status_bar_text: '#123c3c'
+  session_border: '#b8ded8'
+  ui_tool: '#0f5f5f'
+  completion_menu_bg: '#ffffff'

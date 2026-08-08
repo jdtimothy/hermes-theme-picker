@@ -1,0 +1,21 @@
+name: theme-picker-dark-ayu-light
+description: Theme Picker transport for Ayu (light)
+colors:
+  background: '#fafafa'
+  ui_accent: '#a36229'
+  banner_accent: '#a36229'
+  banner_title: '#555f6a'
+  banner_text: '#555f6a'
+  ui_text: '#555f6a'
+  banner_dim: '#6f737a'
+  banner_border: '#e8e8e8'
+  ui_border: '#e8e8e8'
+  ui_ok: '#6e8e39'
+  ui_warn: '#936b09'
+  ui_error: '#bc453b'
+  prompt: '#555f6a'
+  status_bar_bg: '#f0f0f0'
+  status_bar_text: '#555f6a'
+  session_border: '#e8e8e8'
+  ui_tool: '#8a521f'
+  completion_menu_bg: '#f0f0f0'

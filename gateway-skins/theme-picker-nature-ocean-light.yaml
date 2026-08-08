@@ -1,0 +1,21 @@
+name: theme-picker-nature-ocean-light
+description: Theme Picker transport for Nature Ocean (light)
+colors:
+  background: '#e9f5f2'
+  ui_accent: '#127a7a'
+  banner_accent: '#127a7a'
+  banner_title: '#143838'
+  banner_text: '#143838'
+  ui_text: '#143838'
+  banner_dim: '#3f6666'
+  banner_border: '#bcd8d4'
+  ui_border: '#bcd8d4'
+  ui_ok: '#3f7d4e'
+  ui_warn: '#a87a1f'
+  ui_error: '#b23a3a'
+  prompt: '#143838'
+  status_bar_bg: '#d4e8e4'
+  status_bar_text: '#143838'
+  session_border: '#bcd8d4'
+  ui_tool: '#106666'
+  completion_menu_bg: '#ffffff'

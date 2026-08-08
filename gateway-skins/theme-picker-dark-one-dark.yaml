@@ -1,0 +1,21 @@
+name: theme-picker-dark-one-dark
+description: Theme Picker transport for One (dark)
+colors:
+  background: '#282c34'
+  ui_accent: '#61afef'
+  banner_accent: '#61afef'
+  banner_title: '#abb2bf'
+  banner_text: '#abb2bf'
+  ui_text: '#abb2bf'
+  banner_dim: '#90959e'
+  banner_border: '#3e4451'
+  ui_border: '#3e4451'
+  ui_ok: '#98c379'
+  ui_warn: '#e5c07b'
+  ui_error: '#e06c75'
+  prompt: '#abb2bf'
+  status_bar_bg: '#252830'
+  status_bar_text: '#abb2bf'
+  session_border: '#3e4451'
+  ui_tool: '#8ec7f5'
+  completion_menu_bg: '#252830'

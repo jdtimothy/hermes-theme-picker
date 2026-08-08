@@ -1,0 +1,21 @@
+name: theme-picker-dark-dracula-light
+description: Theme Picker transport for Dracula (light)
+colors:
+  background: '#f8f8f2'
+  ui_accent: '#7b4fb8'
+  banner_accent: '#7b4fb8'
+  banner_title: '#282a36'
+  banner_text: '#282a36'
+  ui_text: '#282a36'
+  banner_dim: '#4c5d99'
+  banner_border: '#dcd9d0'
+  ui_border: '#dcd9d0'
+  ui_ok: '#1f7f3b'
+  ui_warn: '#8a8210'
+  ui_error: '#c22f2f'
+  prompt: '#282a36'
+  status_bar_bg: '#ecebe4'
+  status_bar_text: '#282a36'
+  session_border: '#dcd9d0'
+  ui_tool: '#0d6b85'
+  completion_menu_bg: '#f4f4ee'

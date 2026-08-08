@@ -1,0 +1,21 @@
+name: theme-picker-steel-thread-light
+description: Theme Picker transport for Steel Thread (light)
+colors:
+  background: '#f2f2f0'
+  ui_accent: '#6e6e68'
+  banner_accent: '#6e6e68'
+  banner_title: '#2c2c2a'
+  banner_text: '#2c2c2a'
+  ui_text: '#2c2c2a'
+  banner_dim: '#5f5f5a'
+  banner_border: '#d2d2cc'
+  ui_border: '#d2d2cc'
+  ui_ok: '#3f7d4e'
+  ui_warn: '#a87a1f'
+  ui_error: '#b23a3a'
+  prompt: '#2c2c2a'
+  status_bar_bg: '#e2e2dc'
+  status_bar_text: '#2c2c2a'
+  session_border: '#d2d2cc'
+  ui_tool: '#5e5e58'
+  completion_menu_bg: '#ffffff'

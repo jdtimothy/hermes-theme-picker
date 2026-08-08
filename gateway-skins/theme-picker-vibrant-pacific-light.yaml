@@ -1,0 +1,21 @@
+name: theme-picker-vibrant-pacific-light
+description: Theme Picker transport for Vibrant Pacific (light)
+colors:
+  background: '#eef9fd'
+  ui_accent: '#0b6e8f'
+  banner_accent: '#0b6e8f'
+  banner_title: '#141414'
+  banner_text: '#141414'
+  ui_text: '#141414'
+  banner_dim: '#40707f'
+  banner_border: '#c9e4ef'
+  ui_border: '#c9e4ef'
+  ui_ok: '#3fbd6d'
+  ui_warn: '#bc8f1b'
+  ui_error: '#d36060'
+  prompt: '#141414'
+  status_bar_bg: '#e4eff3'
+  status_bar_text: '#141414'
+  session_border: '#c9e4ef'
+  ui_tool: '#0a5873'
+  completion_menu_bg: '#e4eff3'
