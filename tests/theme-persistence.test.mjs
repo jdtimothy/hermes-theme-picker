@@ -640,3 +640,31 @@ test('the self-contained plugin never fetches remote theme fonts', async () => {
 
   assert.doesNotMatch(source, /fonts\.googleapis\.com|fonts\.gstatic\.com/)
 })
+
+test('applying a scene hands the switch to Desktop\'s ThemeProvider so its state cannot revert it', async () => {
+  const plugin = await loadPlugin(new Map(), true)
+  const scene = plugin.__test.scenes.find(item => item.name === 'shadow-thief')
+  const calls = []
+  const provider = {
+    setTheme: name => calls.push(['theme', name]),
+    setMode: mode => calls.push(['mode', mode])
+  }
+
+  await plugin.__test.applyScene(scene, 'dark', () => {}, provider)
+
+  // The manual paint still lands immediately (no flicker on the switch)...
+  assert.equal(plugin.__state.root.dataset.hermesTheme, 'shadow-thief')
+  assert.equal(plugin.__state.root.dataset.hermesMode, 'dark')
+  // ...and Desktop's own React state is told, so a later render keeps the theme
+  // instead of repainting its stale state over the manual paint.
+  assert.deepEqual(calls, [['theme', 'shadow-thief'], ['mode', 'dark']])
+})
+
+test('applying a scene without a captured provider still paints (non-React fallback)', async () => {
+  const plugin = await loadPlugin(new Map(), true)
+  const scene = plugin.__test.scenes.find(item => item.name === 'shadow-thief')
+
+  assert.doesNotThrow(() => plugin.__test.applyScene(scene, 'light', () => {}))
+  assert.equal(plugin.__state.root.dataset.hermesTheme, 'shadow-thief')
+  assert.equal(plugin.__state.root.dataset.hermesMode, 'light')
+})

@@ -1,0 +1,4 @@
+# Normalize text to LF in the repo and the working tree. The plugin is plain
+# ESM that the desktop loader and the test harness parse with line-anchored
+# regexes; CRLF breaks both.
+* text=auto eol=lf

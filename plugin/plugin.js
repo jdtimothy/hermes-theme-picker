@@ -3,8 +3,11 @@
  *
  * Self-contained: all scene color data is embedded (no Python backend, no REST),
  * so it works identically on any machine running Hermes Desktop. Applying a
- * scene mirrors Desktop's root-token application path immediately, then saves the
- * scene and mode for the next boot — no navigation or renderer reload. The
+ * scene paints Desktop's root tokens immediately AND hands the switch to
+ * Desktop's own ThemeProvider (useTheme().setTheme/setMode), so the provider's
+ * React state agrees and the next render keeps the theme instead of reverting to
+ * its stale state. The scene and mode are saved for the next boot — no
+ * navigation or renderer reload. The
  * selected concrete light/dark variant is also queued through gateway
  * `config.set`, which broadcasts it to every connected Desktop and CLI.
  *
@@ -35,6 +38,7 @@ import {
   SIDEBAR_NAV_AREA,
   STATUSBAR_AREAS,
   THEMES_AREA,
+  useTheme,
   useValue
 } from '@hermes/plugin-sdk'
 import { jsx, jsxs } from 'react/jsx-runtime'
@@ -65,6 +69,14 @@ const SCENE_TYPOGRAPHY = {
 let gatewaySyncQueue = Promise.resolve()
 let applyGeneration = 0
 const latestAppearanceByProfile = new Map()
+
+// Desktop's own ThemeProvider API, captured from a mounted host component.
+// The plugin paints root tokens for an instant switch, but Desktop re-applies
+// its React state on the next render — so a manual-only paint reverts on any
+// navigation, click, or profile switch. Holding setTheme/setMode lets the
+// plugin hand the switch to the provider so state, persistence, and the paint
+// all agree. Null until a component mounts (e.g. under the test harness).
+let desktopThemeApi = null
 
 // ---------------------------------------------------------------------------
 // Embedded skin catalog — generated from ~/.hermes/skins/*.yaml + backend
@@ -304,6 +316,40 @@ function applyDesktopTheme(theme, mode) {
     // Restricted storage must not block the current in-place repaint.
   }
 
+}
+
+/**
+ * Hand a scene switch to Desktop's ThemeProvider so React state stops
+ * disagreeing with the painted root tokens. Returns false when no provider API
+ * is captured, leaving the manual paint as the only change.
+ */
+function syncDesktopState(name, mode, api) {
+  const target = api || desktopThemeApi
+  if (!target || typeof target.setTheme !== 'function') return false
+  try {
+    target.setTheme(name)
+    if (typeof target.setMode === 'function') target.setMode(mode)
+    return true
+  } catch {
+    return false
+  }
+}
+
+/**
+ * Capture Desktop's theme API for the module while the host component lives.
+ * Desktop's provider memoizes setTheme/setMode, so the deps stay stable.
+ */
+function useDesktopThemeApi() {
+  const api = useTheme()
+  useEffect(() => {
+    if (api && typeof api.setTheme === 'function') {
+      desktopThemeApi = { setTheme: api.setTheme, setMode: api.setMode }
+    }
+    return () => {
+      if (desktopThemeApi && desktopThemeApi.setTheme === (api && api.setTheme)) desktopThemeApi = null
+    }
+  }, [api && api.setTheme, api && api.setMode])
+  return api
 }
 
 function isLegacyPickerTheme(existing, theme) {
@@ -582,6 +628,7 @@ function syncSceneToGateway(scene, mode, profile, generation) {
       const isActiveProfile = activeProfile === profile
       if (latest && isActiveProfile) {
         applyDesktopTheme(sceneToDesktopTheme(latest.scene), latest.mode)
+        syncDesktopState(latest.scene.name, latest.mode)
       } else if (!isActiveProfile) {
         // config.set broadcasts before resolving, so this old-profile request
         // may have just repainted the profile the user switched into. Restore
@@ -591,6 +638,7 @@ function syncSceneToGateway(scene, mode, profile, generation) {
           recoveryAppearances.get(activeProfile) || recoveryAppearances.get('default')
         if (activeRecovery) {
           applyDesktopTheme(sceneToDesktopTheme(activeRecovery.scene), activeRecovery.mode)
+          syncDesktopState(activeRecovery.scene.name, activeRecovery.mode)
           persistAppearance(activeRecovery.scene.name, activeRecovery.mode, activeProfile)
         }
       }
@@ -611,6 +659,7 @@ function syncSceneToGateway(scene, mode, profile, generation) {
         // root before this latest request failed. Reassert the user's latest
         // optimistic selection in the live Desktop as well as in persistence.
         applyDesktopTheme(sceneToDesktopTheme(latest.scene), latest.mode)
+        syncDesktopState(latest.scene.name, latest.mode)
       }
       persistLatestAppearance(profile)
       if (isLatest && isActiveProfile) {
@@ -627,13 +676,17 @@ function syncSceneToGateway(scene, mode, profile, generation) {
   return queued
 }
 
-function applyScene(scene, mode, setActive) {
+function applyScene(scene, mode, setActive, api) {
   const profile = host.state.profile.get() || 'default'
   const generation = ++applyGeneration
   latestAppearanceByProfile.set(profile, { generation, scene, mode })
   const theme = sceneToDesktopTheme(scene)
   const bootThemeSaved = CORE_DESKTOP_THEMES.has(scene.name) || persistThemesForBoot([theme])
   applyDesktopTheme(theme, mode)
+  // Keep Desktop's own React state in step with the paint; otherwise its
+  // provider repaints the previous theme on the next render and the switch
+  // appears to revert (navigation, click, profile switch).
+  syncDesktopState(scene.name, mode, api)
   const appearanceSaved = persistAppearance(scene.name, mode, profile)
   const persisted = bootThemeSaved && appearanceSaved
   haptic('tap')
@@ -704,6 +757,7 @@ function ThemeCard({ scene, mode, active, applying, onApply }) {
 
 function ThemePicker() {
   const [active, setActive, live] = useActiveSkin()
+  const desktopTheme = useDesktopThemeApi()
   const [q, setQ] = useState('')
   const [applying, setApplying] = useState(null)
   const profile = useValue(host.state.profile) || 'default'
@@ -736,7 +790,7 @@ function ThemePicker() {
     const nextMode = scene.modeSupport === 'dynamic' ? mode : scene.modeSupport
     setApplying(scene.name)
     try {
-      applyScene(scene, nextMode, setActive)
+      applyScene(scene, nextMode, setActive, desktopTheme)
     } finally {
       setApplying(null)
     }
@@ -746,7 +800,7 @@ function ThemePicker() {
     if (next !== 'light' && next !== 'dark') return
     setMode(next)
     const scene = allSkins.find(item => item.name === active)
-    if (scene) applyScene(scene, next, setActive)
+    if (scene) applyScene(scene, next, setActive, desktopTheme)
   }
 
   const cols = columnsForWidth(viewport.width)
@@ -842,6 +896,7 @@ function ThemePicker() {
 // ---------------------------------------------------------------------------
 
 function ThemeChip() {
+  useDesktopThemeApi()
   const [active] = useActiveSkin()
 
   return jsx('button', {

@@ -376,7 +376,7 @@ def _write_gateway_transport_skins(catalog: list[dict], destination: Path) -> in
                 "colors": scene[f"{mode}Colors"],
             }
             text = yaml.safe_dump(payload, sort_keys=False, allow_unicode=True)
-            (destination / f"{name}.yaml").write_text(text, encoding="utf-8")
+            (destination / f"{name}.yaml").write_text(text, encoding="utf-8", newline="\n")
 
     for path in destination.glob("*.yaml"):
         if path.name not in expected:
@@ -445,7 +445,7 @@ def main() -> int:
 
     plugin = template.read_text(encoding="utf-8").replace("__SKINS_DATA__", data)
     out_path.parent.mkdir(parents=True, exist_ok=True)
-    out_path.write_text(plugin, encoding="utf-8")
+    out_path.write_text(plugin, encoding="utf-8", newline="\n")
 
     print(f"Rebuilt {out_path} with {len(catalog)} scenes from "
           f"{len(user_skins)} bundled skins + {len(builtins)} backend built-ins "
